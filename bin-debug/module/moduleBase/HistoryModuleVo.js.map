@@ -1,0 +1,1 @@
+{"version":3,"file":"HistoryModuleVo.js","sourceRoot":"","sources":["../../../src/module/moduleBase/HistoryModuleVo.ts"],"names":[],"mappings":";;;AAAA;IAEC,yBAAmB,QAAe,EAAE,KAAS,EAAE,YAAgB;QAC9D,IAAI,CAAC,QAAQ,GAAG,QAAQ,CAAC;QACzB,IAAI,CAAC,IAAI,GAAG,KAAK,CAAC;QAClB,IAAI,CAAC,WAAW,GAAG,YAAY,CAAC;IACjC,CAAC;IAOF,sBAAC;AAAD,CAAC,AAbD,IAaC;AAbK,UAAA,eAAe,8BAapB,CAAA"}
