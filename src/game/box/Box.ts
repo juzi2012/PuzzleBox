@@ -9,6 +9,7 @@ class Box extends egret.DisplayObjectContainer
     public score:number=0;
     public weight:number=50;
     public boxSingleAry:BoxSingle[];
+    public grayState:boolean=false;
     public constructor(type:number,color:number){
         super();
         this.boxSingleAry = [];
@@ -22,7 +23,7 @@ class Box extends egret.DisplayObjectContainer
                 this.style=[[1]];
                 this.style_w = 1;
                 this.style_h = 1;
-                this.weight=50;
+                this.weight=30;
             break;
             case 2:
                 this.style=[[1],[1]];
@@ -143,13 +144,35 @@ class Box extends egret.DisplayObjectContainer
            egret.Tween.get(box).to({scaleX:1,scaleY:1,x:box.posy*(GameConsts.GAME_TILE_WIDHT_AND_HEIGHT*1),y:box.posx*(GameConsts.GAME_TILE_WIDHT_AND_HEIGHT*1)}, 40);
         }
     }
-    public setGray():void
+    public setGray(state:boolean):void
     {
-        let ft:egret.Filter=new egret.Filter();
-        this.filters=[new egret.Filter()]
+        //颜色矩阵数组
+        let colorMatrixGray = [
+            0.3,0.6,0,0,0,
+            0.3,0.6,0,0,0,
+            0.3,0.6,0,0,0,
+            0,0,0,1,0
+        ];
+        let colorMatrixNormal = [
+            1,0,0,0,0,
+            0,1,0,0,0,
+            0,0,1,0,0,
+            0,0,0,1,0
+        ];
+        if(state==true){
+            this.grayState=true;
+            this.filters = [new egret.ColorMatrixFilter(colorMatrixGray)];
+        }else{
+            this.grayState=false;
+            
+            this.filters = [new egret.ColorMatrixFilter(colorMatrixNormal)];
+        }
     }
     public dispose():void
     {
+        if(this.grayState==true){
+            this.setGray(false);
+        }
         let len:number = this.boxSingleAry.length;
         for(let i:number=0;i<len;i++){
             let box:BoxSingle = this.boxSingleAry[i];

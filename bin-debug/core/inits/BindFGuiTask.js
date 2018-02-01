@@ -15,6 +15,7 @@ var BindFGuiTask = (function () {
         // main.mainBinder.bindAll();
         //------ auto end ------//
         game.gameBinder.bindAll();
+        Loading.LoadingBinder.bindAll();
     };
     return BindFGuiTask;
 }());

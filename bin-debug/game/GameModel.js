@@ -25,9 +25,9 @@ var GameModel = (function () {
             this.nowScore = value;
             if (this.nowScore > this.maxScore) {
                 this.maxScore = this.nowScore;
-                egret.localStorage.setItem("puzzleBox_maxScore", this.maxScore.toString());
+                egret.localStorage.setItem(GameConsts.GAME_LOCALSAVE_SCOREMAX, this.maxScore.toString());
             }
-            App.EventCenter.dispatch("nowscorechange");
+            App.EventCenter.dispatch(GameEventConst.GAME_SCORE_CHANGE);
         },
         enumerable: true,
         configurable: true

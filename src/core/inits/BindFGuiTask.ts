@@ -13,5 +13,6 @@ class BindFGuiTask{
 		// main.mainBinder.bindAll();
         //------ auto end ------//
         game.gameBinder.bindAll();
+        Loading.LoadingBinder.bindAll();
     }
 }

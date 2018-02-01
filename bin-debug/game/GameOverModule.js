@@ -27,8 +27,10 @@ var GameOverModule = (function (_super) {
      * 预显示
      */
     GameOverModule.prototype.preShow = function (data) {
+        App.SoundUtils.stopSoundByID("bg");
         this.mContent.m_btn_restart.addClickListener(function () {
-            App.EventCenter.dispatch("gameover");
+            App.EventCenter.dispatch(GameEventConst.GAME_RESTART);
+            App.SoundUtils.playSound("button", 0);
             ModuleMgr.ins.closeModule(ModuleEnum.GameOver);
         }, this);
         this.mContent.m_txt_now.text = GameModel.ins.score.toString();

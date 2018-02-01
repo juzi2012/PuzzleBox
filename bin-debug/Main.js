@@ -99,8 +99,11 @@ var Main = (function (_super) {
             var result, userInfo;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.loadResource()];
+                    case 0: 
+                    //预加载部分资源，主要是用来显示loading的部分素材
+                    return [4 /*yield*/, this.loadPreLoadResource()];
                     case 1:
+                        //预加载部分资源，主要是用来显示loading的部分素材
                         _a.sent();
                         this.startEngine();
                         return [4 /*yield*/, RES.getResAsync("description_json")];
@@ -113,18 +116,19 @@ var Main = (function (_super) {
                     case 4:
                         userInfo = _a.sent();
                         console.log(userInfo);
+                        this.loadGameResource();
                         return [2 /*return*/];
                 }
             });
         });
     };
-    Main.prototype.loadResource = function () {
+    Main.prototype.loadPreLoadResource = function () {
         return __awaiter(this, void 0, void 0, function () {
             var loadingView, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
+                        _a.trys.push([0, 3, , 4]);
                         loadingView = new LoadingUI();
                         this.stage.addChild(loadingView);
                         return [4 /*yield*/, RES.loadConfig("resource/default.res.json", "resource/")];
@@ -133,19 +137,20 @@ var Main = (function (_super) {
                         return [4 /*yield*/, RES.loadGroup("preload", 0, loadingView)];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, RES.loadGroup("game", 0, loadingView)];
-                    case 3:
-                        _a.sent();
                         this.stage.removeChild(loadingView);
-                        return [3 /*break*/, 5];
-                    case 4:
+                        return [3 /*break*/, 4];
+                    case 3:
                         e_1 = _a.sent();
                         console.error(e_1);
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
+    };
+    Main.prototype.loadGameResource = function () {
+        fairygui.UIPackage.addPackage("Loading");
+        ModuleMgr.ins.showModule(ModuleEnum.LOADING, []);
     };
     /**
      * 开始初始化引擎
@@ -160,12 +165,12 @@ var Main = (function (_super) {
         new RegModuleTask();
         new BindFGuiTask();
         new RegRunTimeClassTask();
-        this.startGame();
+        // this.startGame();
     };
     Main.prototype.startGame = function () {
         fairygui.UIPackage.addPackage("game");
         ModuleMgr.ins.showModule(ModuleEnum.GAME_TOP, []);
-        ModuleMgr.ins.showModule(ModuleEnum.GAME, []);
+        ModuleMgr.ins.showModule(ModuleEnum.GAME_MENU, []);
     };
     return Main;
 }(egret.DisplayObjectContainer));

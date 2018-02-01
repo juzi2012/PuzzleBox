@@ -13,8 +13,10 @@ class GameOverModule extends PopModuleView {
      * 预显示
      */
     public preShow(data?: any): void {
+        App.SoundUtils.stopSoundByID("bg");
         this.mContent.m_btn_restart.addClickListener(()=>{
-            App.EventCenter.dispatch("gameover");
+            App.EventCenter.dispatch(GameEventConst.GAME_RESTART);
+            App.SoundUtils.playSound("button",0);
             ModuleMgr.ins.closeModule(ModuleEnum.GameOver);
         },this);
         this.mContent.m_txt_now.text=GameModel.ins.score.toString();

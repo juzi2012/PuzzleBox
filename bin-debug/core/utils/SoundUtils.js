@@ -33,17 +33,15 @@ var core;
          * @param onPlayComplete: () => void 播放完毕回调函数
          * @version Egret 2.4
          */
-        SoundUtils.prototype.playSound = function (id, loop, onPlayComplete) {
-            if (loop === void 0) { loop = 1; }
-            var config; // = core.Config.getConfig(SoundConfig).get(id);
+        /*public playSound(id: number, loop: number = 1, onPlayComplete?: () => void): void {
+            let config: any ;//= core.Config.getConfig(SoundConfig).get(id);
             if (config) {
                 this.stopSound(config.coverKey.toString());
-            }
-            else {
-                egret.log("ID\u4E3A" + id + "\u7684\u97F3\u6548\u5728SoundConfig\u4E2D\u4E0D\u5B58\u5728");
+            } else {
+                egret.log(`ID为${id}的音效在SoundConfig中不存在`);
                 return;
             }
-            var sound = this.m_sounds[id];
+            let sound: egret.Sound = this.m_sounds[id];
             if (!sound) {
                 sound = RES.getRes(config.soundName);
                 if (sound) {
@@ -55,13 +53,62 @@ var core;
             if (sound) {
                 this.m_playChannel[config.coverKey.toString()] = sound;
                 sound['cover'] = config.coverKey.toString();
+                let channel: egret.SoundChannel;
+                try {
+                    channel = sound.play(0, loop);
+                } catch (e) {
+                    egret.log(`ID为${id}的音乐播放失败`);
+                    delete this.m_playChannel[config.coverKey.toString()];
+                    return;
+                }
+                channel['owner'] = sound;
+                channel['maxCount'] = loop > 0 ? loop : Number.MAX_VALUE;
+                channel['count'] = 0;
+                if (sound.type == egret.Sound.EFFECT) {
+                    channel.volume = this.m_effectVolume;
+                } else {
+                    channel.volume = this.m_BGMVolume;
+                }
+                if (onPlayComplete) {
+                    this.m_callbacks[channel.hashCode.toString()] = onPlayComplete;
+                }
+                channel.addEventListener(egret.Event.SOUND_COMPLETE, this.onPlayComplete, this);
+                this.m_channels[sound.hashCode.toString()] = channel;
+            } else {
+                egret.log(`名称为${config.soundName}的音效资源不存在`);
+                return;
+            }
+        }*/
+        /**
+         * @language zh_CN
+         * @param id 声音ID
+         * @param loops 播放次数，默认值是 1，循环播放。 大于 0 为播放次数，如 1 为播放 1 次；小于等于 0，为循环播放。
+         * @param onPlayComplete: () => void 播放完毕回调函数
+         * @version Egret 2.4
+         */
+        SoundUtils.prototype.playSound = function (id, type, loop, onPlayComplete) {
+            if (loop === void 0) { loop = 1; }
+            if (GameSetting.ins.soundOff == true)
+                return;
+            var sound = this.m_sounds[id];
+            if (!sound) {
+                sound = RES.getRes(id);
+                if (sound) {
+                    sound.type = type == 0 ? egret.Sound.EFFECT : egret.Sound.MUSIC;
+                    this.m_sounds[id] = sound;
+                    this.m_soundGroups[sound.type].push(sound);
+                }
+            }
+            if (sound) {
+                this.m_playChannel[id] = sound;
+                sound['cover'] = id.toString();
                 var channel = void 0;
                 try {
                     channel = sound.play(0, loop);
                 }
                 catch (e) {
                     egret.log("ID\u4E3A" + id + "\u7684\u97F3\u4E50\u64AD\u653E\u5931\u8D25");
-                    delete this.m_playChannel[config.coverKey.toString()];
+                    delete this.m_playChannel[id.toString()];
                     return;
                 }
                 channel['owner'] = sound;
@@ -80,7 +127,7 @@ var core;
                 this.m_channels[sound.hashCode.toString()] = channel;
             }
             else {
-                egret.log("\u540D\u79F0\u4E3A" + config.soundName + "\u7684\u97F3\u6548\u8D44\u6E90\u4E0D\u5B58\u5728");
+                egret.log("\u540D\u79F0\u4E3A" + id + "\u7684\u97F3\u6548\u8D44\u6E90\u4E0D\u5B58\u5728");
                 return;
             }
         };

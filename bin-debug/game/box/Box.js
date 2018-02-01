@@ -17,6 +17,7 @@ var Box = (function (_super) {
         _this.style_h = 0;
         _this.score = 0;
         _this.weight = 50;
+        _this.grayState = false;
         _this.boxSingleAry = [];
         _this.type = type;
         _this.color = color;
@@ -29,7 +30,7 @@ var Box = (function (_super) {
                 this.style = [[1]];
                 this.style_w = 1;
                 this.style_h = 1;
-                this.weight = 50;
+                this.weight = 30;
                 break;
             case 2:
                 this.style = [[1], [1]];
@@ -146,11 +147,33 @@ var Box = (function (_super) {
             egret.Tween.get(box).to({ scaleX: 1, scaleY: 1, x: box.posy * (GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 1), y: box.posx * (GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 1) }, 40);
         }
     };
-    Box.prototype.setGray = function () {
-        var ft = new egret.Filter();
-        this.filters = [new egret.Filter()];
+    Box.prototype.setGray = function (state) {
+        //颜色矩阵数组
+        var colorMatrixGray = [
+            0.3, 0.6, 0, 0, 0,
+            0.3, 0.6, 0, 0, 0,
+            0.3, 0.6, 0, 0, 0,
+            0, 0, 0, 1, 0
+        ];
+        var colorMatrixNormal = [
+            1, 0, 0, 0, 0,
+            0, 1, 0, 0, 0,
+            0, 0, 1, 0, 0,
+            0, 0, 0, 1, 0
+        ];
+        if (state == true) {
+            this.grayState = true;
+            this.filters = [new egret.ColorMatrixFilter(colorMatrixGray)];
+        }
+        else {
+            this.grayState = false;
+            this.filters = [new egret.ColorMatrixFilter(colorMatrixNormal)];
+        }
     };
     Box.prototype.dispose = function () {
+        if (this.grayState == true) {
+            this.setGray(false);
+        }
         var len = this.boxSingleAry.length;
         for (var i = 0; i < len; i++) {
             var box = this.boxSingleAry[i];

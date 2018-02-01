@@ -63,27 +63,33 @@ class Main extends egret.DisplayObjectContainer {
     }
 
     private async runGame() {
-        await this.loadResource()
+        //预加载部分资源，主要是用来显示loading的部分素材
+        await this.loadPreLoadResource()
         this.startEngine();
         const result = await RES.getResAsync("description_json");
         await platform.login();
         const userInfo = await platform.getUserInfo();
         console.log(userInfo);
 
+        this.loadGameResource();
     }
 
-    private async loadResource() {
+    private async loadPreLoadResource() {
         try {
             const loadingView = new LoadingUI();
             this.stage.addChild(loadingView);
             await RES.loadConfig("resource/default.res.json", "resource/");
-            await RES.loadGroup("preload", 0, loadingView);
-            await RES.loadGroup("game", 0, loadingView);
+            await RES.loadGroup("preload", 0, loadingView); 
             this.stage.removeChild(loadingView);
         }
         catch (e) {
             console.error(e);
         }
+    }
+    private loadGameResource()
+    {
+        fairygui.UIPackage.addPackage("Loading");
+        ModuleMgr.ins.showModule(ModuleEnum.LOADING,[]);
     }
 
     /**
@@ -101,12 +107,12 @@ class Main extends egret.DisplayObjectContainer {
         new BindFGuiTask();
         new RegRunTimeClassTask();
 
-        this.startGame();
+        // this.startGame();
     }
     private startGame():void
     {
         fairygui.UIPackage.addPackage("game");
         ModuleMgr.ins.showModule(ModuleEnum.GAME_TOP,[]);
-        ModuleMgr.ins.showModule(ModuleEnum.GAME,[]);
+        ModuleMgr.ins.showModule(ModuleEnum.GAME_MENU,[]);
     }
 }

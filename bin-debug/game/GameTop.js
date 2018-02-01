@@ -26,12 +26,32 @@ var GameTop = (function (_super) {
         configurable: true
     });
     GameTop.prototype.preShow = function (data) {
+        var _this = this;
+        this.mContent.m_btn_sound.selected = GameSetting.ins.soundOff;
         this.mContent.m_btn_pause.addClickListener(function () {
-            ModuleMgr.ins.showModule(ModuleEnum.GameOver);
+            App.SoundUtils.playSound("button", 0);
+            _this.mContent.m_btnctrl.selectedIndex = (_this.mContent.m_btnctrl.selectedIndex == 0) ? 1 : 0;
         }, this);
-        App.EventCenter.addListener("nowscorechange", this.changeNowScore, this);
-        App.EventCenter.addListener("gameover", this.gameRestart, this);
-        GameModel.ins.maxScore = Number(egret.localStorage.getItem("puzzleBox_maxScore"));
+        this.mContent.m_btnrefresh.addClickListener(function () {
+            App.SoundUtils.playSound("button", 0);
+            App.EventCenter.dispatch(GameEventConst.GAME_RESTART);
+            _this.mContent.m_btnctrl.selectedIndex = 0;
+        }, this);
+        this.mContent.m_btn_sound.addClickListener(function () {
+            App.SoundUtils.playSound("button", 0);
+            GameSetting.ins.setSoundOnOff(_this.mContent.m_btn_sound.selected);
+            _this.mContent.m_btnctrl.selectedIndex = 0;
+        }, this);
+        this.mContent.m_btn_home.addClickListener(function () {
+            App.SoundUtils.playSound("button", 0);
+            ModuleMgr.ins.closeModule(ModuleEnum.GAME_TOP);
+            ModuleMgr.ins.closeModule(ModuleEnum.GAME);
+            ModuleMgr.ins.showModule(ModuleEnum.GAME_MENU, []);
+            _this.mContent.m_btnctrl.selectedIndex = 0;
+        }, this);
+        App.EventCenter.addListener(GameEventConst.GAME_SCORE_CHANGE, this.changeNowScore, this);
+        App.EventCenter.addListener(GameEventConst.GAME_RESTART, this.gameRestart, this);
+        GameModel.ins.maxScore = Number(egret.localStorage.getItem(GameConsts.GAME_LOCALSAVE_SCOREMAX));
         this.preShowCpl();
     };
     GameTop.prototype.changeNowScore = function () {

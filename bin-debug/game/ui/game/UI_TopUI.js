@@ -21,8 +21,12 @@ var game;
         };
         UI_TopUI.prototype.constructFromXML = function (xml) {
             _super.prototype.constructFromXML.call(this, xml);
+            this.m_btnctrl = this.getControllerAt(0);
             this.m_txt_score = (this.getChildAt(0));
-            this.m_btn_pause = (this.getChildAt(1));
+            this.m_btn_home = (this.getChildAt(1));
+            this.m_btn_sound = (this.getChildAt(2));
+            this.m_btnrefresh = (this.getChildAt(3));
+            this.m_btn_pause = (this.getChildAt(4));
         };
         UI_TopUI.URL = "ui://7cac2uhfhlxda";
         return UI_TopUI;

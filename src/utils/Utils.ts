@@ -21,4 +21,5 @@ class Utils {
     {
         egret.Tween.get(tar).to({x:endPos.x-tar.width/2,y:endPos.y-tar.height/2},300).call(()=>{tar.visible=false;GameModel.ins.score=GameModel.ins.scoreSign},this);
     }
+    
 }

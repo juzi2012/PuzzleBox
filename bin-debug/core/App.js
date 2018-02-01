@@ -130,6 +130,16 @@ var App = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(App, "SoundUtils", {
+        /**
+         * 引擎sound类
+         */
+        get: function () {
+            return core.SoundUtils.getInstance();
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(App, "EventCenter", {
         get: function () {
             if (App._eventCenter == null) {

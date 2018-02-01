@@ -15,8 +15,9 @@ class Game extends Module
     private boxDragStartY:number;
     private dropEndPos:egret.Point;
     private floatScore:FloatScore;
-
+    private floatLayer:fairygui.GComponent;
     private scale:number=1;//在做自适应的时候，全局的缩放比例
+
     public constructor()
     {
         super();
@@ -31,6 +32,12 @@ class Game extends Module
     public preShow(data?:any):void
 	{
 		super.preShow(data);
+        this.nowMoveRaw=-1;
+        this.nowMoveColumn=-1;
+        this.dropAble=false;
+        this.gameover=false;
+        this.touchCon = 0;
+
         let gamebg:egret.Bitmap = Utils.createBitmapByName("gamebg");
         gamebg.width=App.StageUtils.getWidth();
         gamebg.height=App.StageUtils.getHeight();
@@ -44,7 +51,7 @@ class Game extends Module
         }
         this.mContent.displayListContainer.addChild(this.map);
         
-        App.EventCenter.addListener("gameover",this.reStartGame,this);
+        App.EventCenter.addListener(GameEventConst.GAME_RESTART,this.reStartGame,this);
 
         this.createClickBox(1);
         this.createClickBox(2);
@@ -52,13 +59,20 @@ class Game extends Module
 
         this.createStartThreeBox();
 
+        this.floatLayer = new fairygui.GComponent();
+        this.mContent.addChild(this.floatLayer);
+        this.mContent.displayListContainer.setChildIndex(this.floatLayer.displayObject, this.mContent.displayListContainer.numChildren-1);
         this.floatScore = FloatScore.createInstance() as FloatScore;
         this.mContent.displayListContainer.addChild(this.floatScore.displayObject);
         this.floatScore.visible=false;
         this.mContent.displayListContainer.setChildIndex(this.floatScore.displayObject,this.mContent.displayListContainer.numChildren-1);
+
+        App.SoundUtils.playSound("bg",1,-1);
 	}
     private reStartGame():void
     {
+        App.SoundUtils.stopSoundByID("bg");
+        App.SoundUtils.playSound("bg",1,-1);
         GameModel.ins.restart();
         this.touchStatus=false;
         this.nowMoveRaw=-1;
@@ -206,6 +220,7 @@ class Game extends Module
     }
     private checkDrop():void
     {
+        App.SoundUtils.playSound("drop",0);
         let result:any[]=this.map.checkLine();
         let score:number = 0;
         if(result[2]>0){
@@ -218,10 +233,15 @@ class Game extends Module
 
             score=GameModel.ins.nowScore + addScore;
             GameModel.ins.scoreSign=score;
-
-            if(result[2]>2){
-                App.ShockUtils.shock(1,this.mContent.displayObject,5);
+            if(result[2]>4){
+                this.floatCool(new egret.Point(result[0],result[1]));
+            }else if(result[2]>2){
+                this.floatGood(new egret.Point(result[0],result[1]));
             }
+            if(result[2]>2){
+                App.ShockUtils.shock(1,this.mContent.displayObject,6);
+            }
+            App.SoundUtils.playSound("dispear",0);
         }else{
             score = GameModel.ins.nowScore+this.box.score;
             GameModel.ins.score=score;
@@ -236,11 +256,15 @@ class Game extends Module
         }
         if(canGoOn==false){
             this.gameover=true;
-            egret.setTimeout(this.gameOver,this,1000);
+            for(let i:number=0;i<this.boxAry.length;i++){
+                this.boxAry[i].setGray(true);
+            }
+            egret.setTimeout(this.gameOver,this,2000);
         }
     }
     private gameOver():void
     {
+        App.SoundUtils.playSound("gameover",0);
         this.gameover=true;
         ModuleMgr.ins.showModule(ModuleEnum.GameOver,[]);
     }
@@ -261,5 +285,40 @@ class Game extends Module
         App.StageUtils.getStage().addEventListener(egret.TouchEvent.TOUCH_END,this.doDrop,this);
         App.StageUtils.getStage().addEventListener(egret.TouchEvent.TOUCH_MOVE,this.mouseMove,this);
         this.mContent.displayListContainer.addChild(this["clickarea"+pos]);
+    }
+    private floatGood(point:egret.Point):void
+    {
+        let good:game.UI_Good = game.UI_Good.createInstance() as game.UI_Good;
+        this.floatLayer.addChild(good);
+        good.alpha=1;
+        good.scaleX=good.scaleY=1;
+        good.x=point.x;
+        good.y=point.y;
+        good.m_t0.play((good:game.UI_Good)=>{
+            good.parent.removeChild(good);
+            good=null;}
+            ,this
+            ,good);
+    }
+    private floatCool(point:egret.Point):void
+    {
+        let good:game.UI_Good = game.UI_Good.createInstance() as game.UI_Good;
+        this.floatLayer.addChild(good);
+        good.alpha=1;
+        good.scaleX=good.scaleY=1;
+        good.x=point.x;
+        good.y=point.y;
+        good.m_t0.play((good:game.UI_Good)=>{
+            good.parent.removeChild(good);
+            good=null;}
+            ,this
+            ,good);
+    }
+
+    public release():void
+    {
+        App.SoundUtils.stopSoundByID("bg");
+        GameModel.ins.restart();
+        super.release();
     }
 }

@@ -100,6 +100,12 @@ class App {
         return core.EgretExpandUtils.getInstance();
     }
 	/**
+     * 引擎sound类
+     */
+    public static get SoundUtils():core.SoundUtils {
+        return core.SoundUtils.getInstance();
+    }
+	/**
      * 消息通知中心 及时执行
      */
     private static _eventCenter:core.MessageCenter;

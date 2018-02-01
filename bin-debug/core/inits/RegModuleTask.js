@@ -10,6 +10,8 @@ var RegModuleTask = (function () {
         if (true) {
             this.checkHasSameId();
         }
+        this.regModule(ModuleEnum.LOADING, LayerEnum.SCENE, GameLoadingModule, []);
+        this.regModule(ModuleEnum.GAME_MENU, LayerEnum.SCENE, GameMenuModule, []);
         this.regModule(ModuleEnum.GAME, LayerEnum.SCENE, Game, []);
         this.regModule(ModuleEnum.GameOver, LayerEnum.POPUP, GameOverModule, []);
         this.regModule(ModuleEnum.GAME_TOP, LayerEnum.STATIC, GameTop, []);

@@ -7,7 +7,7 @@ var BoxFactory = (function () {
     BoxFactory.createPuzzleBox = function () {
         var type = 0; //App.MathUtils.random(1,GameConsts.GAME_BOX_TYPE_NUM);
         var sum = 0;
-        var data = { "1": 50, "2": 50, "3": 60, "4": 40, "5": 30, "6": 60, "7": 50, "8": 30, "9": 30, "10": 20, "11": 60 };
+        var data = { "1": 30, "2": 50, "3": 60, "4": 40, "5": 30, "6": 60, "7": 50, "8": 30, "9": 30, "10": 20, "11": 60 };
         for (var i in data) {
             sum += Number(data[i]);
         }
@@ -31,7 +31,7 @@ var BoxFactory = (function () {
         box.alpha = 1;
         return box;
     };
-    BoxFactory.data = { "1": 50, "2": 50, "3": 60, "4": 40, "5": 30, "6": 60, "7": 50, "8": 30, "9": 30, "10": 20, "11": 60 };
+    BoxFactory.data = { "1": 30, "2": 50, "3": 60, "4": 40, "5": 30, "6": 60, "7": 50, "8": 30, "9": 30, "10": 20, "11": 60 };
     return BoxFactory;
 }());
 __reflect(BoxFactory.prototype, "BoxFactory");

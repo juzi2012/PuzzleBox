@@ -13,12 +13,31 @@ class GameTop extends Module {
         return this.content as game.UI_TopUI;
     }
 	public preShow(data?: any): void {
+		this.mContent.m_btn_sound.selected = GameSetting.ins.soundOff;
 		this.mContent.m_btn_pause.addClickListener(()=>{
-            ModuleMgr.ins.showModule(ModuleEnum.GameOver);
+			App.SoundUtils.playSound("button",0);
+			this.mContent.m_btnctrl.selectedIndex=(this.mContent.m_btnctrl.selectedIndex==0)?1:0;
         },this);
-		App.EventCenter.addListener("nowscorechange",this.changeNowScore,this);
-		App.EventCenter.addListener("gameover",this.gameRestart,this);
-		GameModel.ins.maxScore = Number(egret.localStorage.getItem("puzzleBox_maxScore"));
+		this.mContent.m_btnrefresh.addClickListener(()=>{
+			App.SoundUtils.playSound("button",0);
+			App.EventCenter.dispatch(GameEventConst.GAME_RESTART);
+			this.mContent.m_btnctrl.selectedIndex=0;
+		},this);
+		this.mContent.m_btn_sound.addClickListener(()=>{
+			App.SoundUtils.playSound("button",0);
+			GameSetting.ins.setSoundOnOff(this.mContent.m_btn_sound.selected);
+			this.mContent.m_btnctrl.selectedIndex=0;
+		},this);
+		this.mContent.m_btn_home.addClickListener(()=>{
+			App.SoundUtils.playSound("button",0);
+			ModuleMgr.ins.closeModule(ModuleEnum.GAME_TOP);
+			ModuleMgr.ins.closeModule(ModuleEnum.GAME);
+			ModuleMgr.ins.showModule(ModuleEnum.GAME_MENU,[]);
+			this.mContent.m_btnctrl.selectedIndex=0;
+		},this);
+		App.EventCenter.addListener(GameEventConst.GAME_SCORE_CHANGE,this.changeNowScore,this);
+		App.EventCenter.addListener(GameEventConst.GAME_RESTART,this.gameRestart,this);
+		GameModel.ins.maxScore = Number(egret.localStorage.getItem(GameConsts.GAME_LOCALSAVE_SCOREMAX));
 		this.preShowCpl();
 	}
 	private changeNowScore():void

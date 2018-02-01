@@ -59,8 +59,8 @@ module core {
          * @param onPlayComplete: () => void 播放完毕回调函数
          * @version Egret 2.4
          */
-        public playSound(id: number, loop: number = 1, onPlayComplete?: () => void): void {
-            let config: any;// = core.Config.getConfig(SoundConfig).get(id);
+        /*public playSound(id: number, loop: number = 1, onPlayComplete?: () => void): void {
+            let config: any ;//= core.Config.getConfig(SoundConfig).get(id);
             if (config) {
                 this.stopSound(config.coverKey.toString());
             } else {
@@ -104,6 +104,53 @@ module core {
                 egret.log(`名称为${config.soundName}的音效资源不存在`);
                 return;
             }
+        }*/
+        /**
+         * @language zh_CN
+         * @param id 声音ID
+         * @param loops 播放次数，默认值是 1，循环播放。 大于 0 为播放次数，如 1 为播放 1 次；小于等于 0，为循环播放。
+         * @param onPlayComplete: () => void 播放完毕回调函数
+         * @version Egret 2.4
+         */
+        public playSound(id: string,type:number, loop: number = 1, onPlayComplete?: () => void): void {
+            if(GameSetting.ins.soundOff==true)return;
+            let sound: egret.Sound = this.m_sounds[id];
+            if (!sound) {
+                sound = RES.getRes(id);
+                if (sound) {
+                    sound.type = type == 0 ? egret.Sound.EFFECT : egret.Sound.MUSIC;
+                    this.m_sounds[id] = sound;
+                    this.m_soundGroups[sound.type].push(sound);
+                }
+            }
+            if (sound) {
+                this.m_playChannel[id] = sound;
+                sound['cover'] = id.toString();
+                let channel: egret.SoundChannel;
+                try {
+                    channel = sound.play(0, loop);
+                } catch (e) {
+                    egret.log(`ID为${id}的音乐播放失败`);
+                    delete this.m_playChannel[id.toString()];
+                    return;
+                }
+                channel['owner'] = sound;
+                channel['maxCount'] = loop > 0 ? loop : Number.MAX_VALUE;
+                channel['count'] = 0;
+                if (sound.type == egret.Sound.EFFECT) {
+                    channel.volume = this.m_effectVolume;
+                } else {
+                    channel.volume = this.m_BGMVolume;
+                }
+                if (onPlayComplete) {
+                    this.m_callbacks[channel.hashCode.toString()] = onPlayComplete;
+                }
+                channel.addEventListener(egret.Event.SOUND_COMPLETE, this.onPlayComplete, this);
+                this.m_channels[sound.hashCode.toString()] = channel;
+            } else {
+                egret.log(`名称为${id}的音效资源不存在`);
+                return;
+            }
         }
         /**
          * 音乐播放完成
@@ -123,7 +170,7 @@ module core {
          * 停止播放音乐
          * @param id 声音ID
          */
-        public stopSoundByID(id: number): void {
+        public stopSoundByID(id: string): void {
             let sound: egret.Sound = this.m_sounds[id];
             if (sound) {
                 this.stop(sound);

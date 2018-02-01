@@ -37,6 +37,11 @@ var Game = (function (_super) {
     });
     Game.prototype.preShow = function (data) {
         _super.prototype.preShow.call(this, data);
+        this.nowMoveRaw = -1;
+        this.nowMoveColumn = -1;
+        this.dropAble = false;
+        this.gameover = false;
+        this.touchCon = 0;
         var gamebg = Utils.createBitmapByName("gamebg");
         gamebg.width = App.StageUtils.getWidth();
         gamebg.height = App.StageUtils.getHeight();
@@ -49,17 +54,23 @@ var Game = (function (_super) {
             this.map.y = App.StageUtils.getHeight() - GameConsts.GAME_CLICK_AREA - this.map.height;
         }
         this.mContent.displayListContainer.addChild(this.map);
-        App.EventCenter.addListener("gameover", this.reStartGame, this);
+        App.EventCenter.addListener(GameEventConst.GAME_RESTART, this.reStartGame, this);
         this.createClickBox(1);
         this.createClickBox(2);
         this.createClickBox(3);
         this.createStartThreeBox();
+        this.floatLayer = new fairygui.GComponent();
+        this.mContent.addChild(this.floatLayer);
+        this.mContent.displayListContainer.setChildIndex(this.floatLayer.displayObject, this.mContent.displayListContainer.numChildren - 1);
         this.floatScore = FloatScore.createInstance();
         this.mContent.displayListContainer.addChild(this.floatScore.displayObject);
         this.floatScore.visible = false;
         this.mContent.displayListContainer.setChildIndex(this.floatScore.displayObject, this.mContent.displayListContainer.numChildren - 1);
+        App.SoundUtils.playSound("bg", 1, -1);
     };
     Game.prototype.reStartGame = function () {
+        App.SoundUtils.stopSoundByID("bg");
+        App.SoundUtils.playSound("bg", 1, -1);
         GameModel.ins.restart();
         this.touchStatus = false;
         this.nowMoveRaw = -1;
@@ -196,6 +207,7 @@ var Game = (function (_super) {
         this.dropAble = false;
     };
     Game.prototype.checkDrop = function () {
+        App.SoundUtils.playSound("drop", 0);
         var result = this.map.checkLine();
         var score = 0;
         if (result[2] > 0) {
@@ -207,9 +219,16 @@ var Game = (function (_super) {
             this.floatScore.data = addScore;
             score = GameModel.ins.nowScore + addScore;
             GameModel.ins.scoreSign = score;
-            if (result[2] > 2) {
-                App.ShockUtils.shock(1, this.mContent.displayObject, 5);
+            if (result[2] > 4) {
+                this.floatCool(new egret.Point(result[0], result[1]));
             }
+            else if (result[2] > 2) {
+                this.floatGood(new egret.Point(result[0], result[1]));
+            }
+            if (result[2] > 2) {
+                App.ShockUtils.shock(1, this.mContent.displayObject, 6);
+            }
+            App.SoundUtils.playSound("dispear", 0);
         }
         else {
             score = GameModel.ins.nowScore + this.box.score;
@@ -225,10 +244,14 @@ var Game = (function (_super) {
         }
         if (canGoOn == false) {
             this.gameover = true;
-            egret.setTimeout(this.gameOver, this, 1000);
+            for (var i = 0; i < this.boxAry.length; i++) {
+                this.boxAry[i].setGray(true);
+            }
+            egret.setTimeout(this.gameOver, this, 2000);
         }
     };
     Game.prototype.gameOver = function () {
+        App.SoundUtils.playSound("gameover", 0);
         this.gameover = true;
         ModuleMgr.ins.showModule(ModuleEnum.GameOver, []);
     };
@@ -248,6 +271,35 @@ var Game = (function (_super) {
         App.StageUtils.getStage().addEventListener(egret.TouchEvent.TOUCH_END, this.doDrop, this);
         App.StageUtils.getStage().addEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
         this.mContent.displayListContainer.addChild(this["clickarea" + pos]);
+    };
+    Game.prototype.floatGood = function (point) {
+        var good = game.UI_Good.createInstance();
+        this.floatLayer.addChild(good);
+        good.alpha = 1;
+        good.scaleX = good.scaleY = 1;
+        good.x = point.x;
+        good.y = point.y;
+        good.m_t0.play(function (good) {
+            good.parent.removeChild(good);
+            good = null;
+        }, this, good);
+    };
+    Game.prototype.floatCool = function (point) {
+        var good = game.UI_Good.createInstance();
+        this.floatLayer.addChild(good);
+        good.alpha = 1;
+        good.scaleX = good.scaleY = 1;
+        good.x = point.x;
+        good.y = point.y;
+        good.m_t0.play(function (good) {
+            good.parent.removeChild(good);
+            good = null;
+        }, this, good);
+    };
+    Game.prototype.release = function () {
+        App.SoundUtils.stopSoundByID("bg");
+        GameModel.ins.restart();
+        _super.prototype.release.call(this);
     };
     return Game;
 }(Module));
