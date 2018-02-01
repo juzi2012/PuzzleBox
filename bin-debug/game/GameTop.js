@@ -26,17 +26,15 @@ var GameTop = (function (_super) {
         configurable: true
     });
     GameTop.prototype.preShow = function (data) {
-        this.mContent.m_btn_restart.addClickListener(function () {
+        this.mContent.m_btn_pause.addClickListener(function () {
             ModuleMgr.ins.showModule(ModuleEnum.GameOver);
         }, this);
         App.EventCenter.addListener("nowscorechange", this.changeNowScore, this);
         App.EventCenter.addListener("gameover", this.gameRestart, this);
         GameModel.ins.maxScore = Number(egret.localStorage.getItem("puzzleBox_maxScore"));
-        this.mContent.m_txt_score_max.text = GameModel.ins.maxScore.toString();
         this.preShowCpl();
     };
     GameTop.prototype.changeNowScore = function () {
-        this.mContent.m_txt_score_max.text = GameModel.ins.maxScore.toString();
         var time = 12;
         var step = 1;
         if (GameModel.ins.nowScore - this.Cont.val > 30) {

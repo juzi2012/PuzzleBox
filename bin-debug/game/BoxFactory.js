@@ -5,8 +5,21 @@ var BoxFactory = (function () {
     function BoxFactory() {
     }
     BoxFactory.createPuzzleBox = function () {
-        var type = App.MathUtils.random(1, 11);
-        var color = App.MathUtils.random(1, 4);
+        var type = 0; //App.MathUtils.random(1,GameConsts.GAME_BOX_TYPE_NUM);
+        var sum = 0;
+        var data = { "1": 50, "2": 50, "3": 60, "4": 40, "5": 30, "6": 60, "7": 50, "8": 30, "9": 30, "10": 20, "11": 60 };
+        for (var i in data) {
+            sum += Number(data[i]);
+        }
+        var t = App.MathUtils.random(0, sum - 1);
+        for (var i in data) {
+            t -= data[i];
+            if (t < 0) {
+                type = Number(i);
+                break;
+            }
+        }
+        var color = App.MathUtils.random(1, GameConsts.GAME_BOX_COLOR_NUM);
         var box = new Box(type, color);
         return box;
     };
@@ -18,6 +31,7 @@ var BoxFactory = (function () {
         box.alpha = 1;
         return box;
     };
+    BoxFactory.data = { "1": 50, "2": 50, "3": 60, "4": 40, "5": 30, "6": 60, "7": 50, "8": 30, "9": 30, "10": 20, "11": 60 };
     return BoxFactory;
 }());
 __reflect(BoxFactory.prototype, "BoxFactory");

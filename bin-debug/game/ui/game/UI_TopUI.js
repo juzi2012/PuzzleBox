@@ -21,11 +21,8 @@ var game;
         };
         UI_TopUI.prototype.constructFromXML = function (xml) {
             _super.prototype.constructFromXML.call(this, xml);
-            this.m_btn_restart = (this.getChildAt(0));
-            this.m_txt_score = (this.getChildAt(1));
-            this.m_n3 = (this.getChildAt(2));
-            this.m_txt_score_max = (this.getChildAt(3));
-            this.m_n5 = (this.getChildAt(4));
+            this.m_txt_score = (this.getChildAt(0));
+            this.m_btn_pause = (this.getChildAt(1));
         };
         UI_TopUI.URL = "ui://7cac2uhfhlxda";
         return UI_TopUI;

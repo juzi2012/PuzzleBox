@@ -85,6 +85,12 @@ var Tile = (function (_super) {
             case 3:
                 boxSingleName = "BoxSingleBlue";
                 break;
+            case 4:
+                boxSingleName = "BoxSingleGreen";
+                break;
+            case 5:
+                boxSingleName = "BoxSinglePurple";
+                break;
         }
         var box = BoxFactory.createSingleBox(boxSingleName, color);
         return box;

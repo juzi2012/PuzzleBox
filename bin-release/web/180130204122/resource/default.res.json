@@ -1,0 +1,49 @@
+{
+	"groups": [
+		{
+			"keys": "description_json,config_json,bg,game@atlas0_png,config2_json",
+			"name": "preload"
+		},
+		{
+			"keys": "game,game@atlas0",
+			"name": "game"
+		}
+	],
+	"resources": [
+		{
+			"url": "config/description.json",
+			"type": "json",
+			"name": "description_json"
+		},
+		{
+			"url": "config/config.json",
+			"type": "json",
+			"name": "config_json"
+		},
+		{
+			"url": "assets/bg.jpg",
+			"type": "image",
+			"name": "bg"
+		},
+		{
+			"url": "assets/game@atlas0.png",
+			"type": "image",
+			"name": "game@atlas0"
+		},
+		{
+			"url": "assets/game.fui",
+			"type": "bin",
+			"name": "game"
+		},
+		{
+			"name": "game@atlas0_png",
+			"type": "image",
+			"url": "assets/game@atlas0.png"
+		},
+		{
+			"name": "config2_json",
+			"type": "json",
+			"url": "config/config.json"
+		}
+	]
+}

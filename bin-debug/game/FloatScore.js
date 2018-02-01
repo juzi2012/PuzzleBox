@@ -22,7 +22,7 @@ var FloatScore = (function (_super) {
         configurable: true
     });
     FloatScore.prototype.playComplete = function () {
-        Utils.floatScore(this, new egret.Point(115, 75));
+        Utils.floatScore(this, new egret.Point(340, 75));
     };
     return FloatScore;
 }(game.UI_FloatScore));

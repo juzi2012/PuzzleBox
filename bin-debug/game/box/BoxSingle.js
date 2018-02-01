@@ -27,6 +27,12 @@ var BoxSingle = (function (_super) {
             case 3:
                 this.pic_name = "blue";
                 break;
+            case 4:
+                this.pic_name = "green";
+                break;
+            case 5:
+                this.pic_name = "purple";
+                break;
         }
         this.pic = Utils.createFairyGuiBitmapByName(this.pic_name);
         this.pic.width = GameConsts.GAME_TILE_WIDHT_AND_HEIGHT;

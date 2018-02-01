@@ -5,7 +5,7 @@ module game {
 	export class UI_BtnRestart extends fairygui.GButton {
 
 		public m_button:fairygui.Controller;
-		public m_n1:fairygui.GImage;
+		public m_n2:fairygui.GImage;
 
 		public static URL:string = "ui://7cac2uhfhlxd9";
 
@@ -21,7 +21,7 @@ module game {
 			super.constructFromXML(xml);
 
 			this.m_button = this.getControllerAt(0);
-			this.m_n1 = <fairygui.GImage><any>(this.getChildAt(0));
+			this.m_n2 = <fairygui.GImage><any>(this.getChildAt(0));
 		}
 	}
 }

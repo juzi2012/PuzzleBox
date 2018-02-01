@@ -15,6 +15,8 @@ class Game extends Module
     private boxDragStartY:number;
     private dropEndPos:egret.Point;
     private floatScore:FloatScore;
+
+    private scale:number=1;//在做自适应的时候，全局的缩放比例
     public constructor()
     {
         super();
@@ -29,13 +31,14 @@ class Game extends Module
     public preShow(data?:any):void
 	{
 		super.preShow(data);
-        let gamebg:egret.Bitmap = Utils.createBitmapByName("bg");
+        let gamebg:egret.Bitmap = Utils.createBitmapByName("gamebg");
         gamebg.width=App.StageUtils.getWidth();
         gamebg.height=App.StageUtils.getHeight();
         this.mContent.displayListContainer.addChild(gamebg);
         this.map=new Map();
         this.map.x=GameConsts.GAME_PADDING;
-        this.map.y=(App.StageUtils.getHeight()-App.StageUtils.getWidth())/2;//GameConsts.GAME_PADDING_TOP + GameConsts.GAME_PADDING;
+        // this.map.y=(App.StageUtils.getHeight()-App.StageUtils.getWidth())/2;//GameConsts.GAME_PADDING_TOP + GameConsts.GAME_PADDING;
+        this.map.y=GameConsts.GAME_PADDING_TOP;
         if(App.StageUtils.getHeight()-this.map.y-this.map.height<GameConsts.GAME_CLICK_AREA){
             this.map.y = App.StageUtils.getHeight()-GameConsts.GAME_CLICK_AREA-this.map.height;
         }
@@ -53,7 +56,6 @@ class Game extends Module
         this.mContent.displayListContainer.addChild(this.floatScore.displayObject);
         this.floatScore.visible=false;
         this.mContent.displayListContainer.setChildIndex(this.floatScore.displayObject,this.mContent.displayListContainer.numChildren-1);
-
 	}
     private reStartGame():void
     {
@@ -67,8 +69,8 @@ class Game extends Module
         for(let i:number=0;i<this.boxAry.length;i++){
             let box:Box=this.boxAry[i];
             box.dispose();
-            let type:number=App.MathUtils.random(1,11);
-            let color:number=App.MathUtils.random(1,4);
+            let type:number=App.MathUtils.random(1,GameConsts.GAME_BOX_TYPE_NUM);
+            let color:number=App.MathUtils.random(1,GameConsts.GAME_BOX_COLOR_NUM);
             box.type=type;
             box.color=color;
             box.create();
@@ -127,9 +129,9 @@ class Game extends Module
         if(this.gameover==true)return;
         this.box = this.getClickBox(evt.target);
         this.touchStatus = true;
-        egret.Tween.get(this.box).to({x:-GameConsts.GAME_CLICK_AREA/2+(GameConsts.GAME_CLICK_AREA+10)*this.box.pos - (this.box.style_w/2-0.5)*GameConsts.GAME_TILE_WIDHT_AND_HEIGHT,y:this.map.y+this.map.height-this.box.style_h*80},50);
+        egret.Tween.get(this.box).to({x:-GameConsts.GAME_CLICK_AREA/2+(GameConsts.GAME_CLICK_AREA+10)*this.box.pos - (this.box.style_w/2-0.5)*GameConsts.GAME_TILE_WIDHT_AND_HEIGHT,y:this.map.y+this.map.height-(this.box.style_h)*GameConsts.GAME_TILE_WIDHT_AND_HEIGHT},50);
         this._distance.x = evt.stageX - (-GameConsts.GAME_CLICK_AREA/2+(GameConsts.GAME_CLICK_AREA+10)*this.box.pos - (this.box.style_w/2-0.5)*GameConsts.GAME_TILE_WIDHT_AND_HEIGHT);
-        this._distance.y = evt.stageY-(this.map.y+this.map.height-this.box.style_h*80);
+        this._distance.y = evt.stageY-(this.map.y+this.map.height-(this.box.style_h)*GameConsts.GAME_TILE_WIDHT_AND_HEIGHT);
         egret.setTimeout(this.box.doScale,this.box,30);
     }
     private getClickBox(shape:egret.Bitmap):Box
@@ -216,6 +218,10 @@ class Game extends Module
 
             score=GameModel.ins.nowScore + addScore;
             GameModel.ins.scoreSign=score;
+
+            if(result[2]>2){
+                App.ShockUtils.shock(1,this.mContent.displayObject,5);
+            }
         }else{
             score = GameModel.ins.nowScore+this.box.score;
             GameModel.ins.score=score;
@@ -241,7 +247,7 @@ class Game extends Module
     private createClickBox(pos:number):void
     {
         var w:number = GameConsts.GAME_CLICK_AREA;
-        var h:number = GameConsts.GAME_CLICK_AREA;
+        var h:number = GameConsts.GAME_CLICK_AREA-30;
         this["clickarea"+pos] = Utils.createFairyGuiBitmapByName("red");
         this["clickarea"+pos].width=w;
         this["clickarea"+pos].height=h;
@@ -250,7 +256,7 @@ class Game extends Module
         this["clickarea"+pos].alpha=0;
         this["clickarea"+pos].touchEnabled=true;
         this["clickarea"+pos].x = -w/2+(w+10)*pos;
-        this["clickarea"+pos].y=App.StageUtils.getStage().stageHeight-h/2;
+        this["clickarea"+pos].y=App.StageUtils.getStage().stageHeight-GameConsts.GAME_CLICK_AREA/2;
         this["clickarea"+pos].addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.startDrag,this);
         App.StageUtils.getStage().addEventListener(egret.TouchEvent.TOUCH_END,this.doDrop,this);
         App.StageUtils.getStage().addEventListener(egret.TouchEvent.TOUCH_MOVE,this.mouseMove,this);

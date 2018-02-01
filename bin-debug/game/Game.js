@@ -20,6 +20,7 @@ var Game = (function (_super) {
         _this.dropAble = false;
         _this.gameover = false;
         _this.touchCon = 0;
+        _this.scale = 1; //在做自适应的时候，全局的缩放比例
         _this.touchStatus = false;
         _this._distance = new egret.Point();
         return _this;
@@ -36,13 +37,14 @@ var Game = (function (_super) {
     });
     Game.prototype.preShow = function (data) {
         _super.prototype.preShow.call(this, data);
-        var gamebg = Utils.createBitmapByName("bg");
+        var gamebg = Utils.createBitmapByName("gamebg");
         gamebg.width = App.StageUtils.getWidth();
         gamebg.height = App.StageUtils.getHeight();
         this.mContent.displayListContainer.addChild(gamebg);
         this.map = new Map();
         this.map.x = GameConsts.GAME_PADDING;
-        this.map.y = (App.StageUtils.getHeight() - App.StageUtils.getWidth()) / 2; //GameConsts.GAME_PADDING_TOP + GameConsts.GAME_PADDING;
+        // this.map.y=(App.StageUtils.getHeight()-App.StageUtils.getWidth())/2;//GameConsts.GAME_PADDING_TOP + GameConsts.GAME_PADDING;
+        this.map.y = GameConsts.GAME_PADDING_TOP;
         if (App.StageUtils.getHeight() - this.map.y - this.map.height < GameConsts.GAME_CLICK_AREA) {
             this.map.y = App.StageUtils.getHeight() - GameConsts.GAME_CLICK_AREA - this.map.height;
         }
@@ -68,8 +70,8 @@ var Game = (function (_super) {
         for (var i = 0; i < this.boxAry.length; i++) {
             var box = this.boxAry[i];
             box.dispose();
-            var type = App.MathUtils.random(1, 11);
-            var color = App.MathUtils.random(1, 4);
+            var type = App.MathUtils.random(1, GameConsts.GAME_BOX_TYPE_NUM);
+            var color = App.MathUtils.random(1, GameConsts.GAME_BOX_COLOR_NUM);
             box.type = type;
             box.color = color;
             box.create();
@@ -121,9 +123,9 @@ var Game = (function (_super) {
             return;
         this.box = this.getClickBox(evt.target);
         this.touchStatus = true;
-        egret.Tween.get(this.box).to({ x: -GameConsts.GAME_CLICK_AREA / 2 + (GameConsts.GAME_CLICK_AREA + 10) * this.box.pos - (this.box.style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT, y: this.map.y + this.map.height - this.box.style_h * 80 }, 50);
+        egret.Tween.get(this.box).to({ x: -GameConsts.GAME_CLICK_AREA / 2 + (GameConsts.GAME_CLICK_AREA + 10) * this.box.pos - (this.box.style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT, y: this.map.y + this.map.height - (this.box.style_h) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT }, 50);
         this._distance.x = evt.stageX - (-GameConsts.GAME_CLICK_AREA / 2 + (GameConsts.GAME_CLICK_AREA + 10) * this.box.pos - (this.box.style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT);
-        this._distance.y = evt.stageY - (this.map.y + this.map.height - this.box.style_h * 80);
+        this._distance.y = evt.stageY - (this.map.y + this.map.height - (this.box.style_h) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT);
         egret.setTimeout(this.box.doScale, this.box, 30);
     };
     Game.prototype.getClickBox = function (shape) {
@@ -205,6 +207,9 @@ var Game = (function (_super) {
             this.floatScore.data = addScore;
             score = GameModel.ins.nowScore + addScore;
             GameModel.ins.scoreSign = score;
+            if (result[2] > 2) {
+                App.ShockUtils.shock(1, this.mContent.displayObject, 5);
+            }
         }
         else {
             score = GameModel.ins.nowScore + this.box.score;
@@ -229,7 +234,7 @@ var Game = (function (_super) {
     };
     Game.prototype.createClickBox = function (pos) {
         var w = GameConsts.GAME_CLICK_AREA;
-        var h = GameConsts.GAME_CLICK_AREA;
+        var h = GameConsts.GAME_CLICK_AREA - 30;
         this["clickarea" + pos] = Utils.createFairyGuiBitmapByName("red");
         this["clickarea" + pos].width = w;
         this["clickarea" + pos].height = h;
@@ -238,7 +243,7 @@ var Game = (function (_super) {
         this["clickarea" + pos].alpha = 0;
         this["clickarea" + pos].touchEnabled = true;
         this["clickarea" + pos].x = -w / 2 + (w + 10) * pos;
-        this["clickarea" + pos].y = App.StageUtils.getStage().stageHeight - h / 2;
+        this["clickarea" + pos].y = App.StageUtils.getStage().stageHeight - GameConsts.GAME_CLICK_AREA / 2;
         this["clickarea" + pos].addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.startDrag, this);
         App.StageUtils.getStage().addEventListener(egret.TouchEvent.TOUCH_END, this.doDrop, this);
         App.StageUtils.getStage().addEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);

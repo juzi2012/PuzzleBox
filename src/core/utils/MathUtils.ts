@@ -12,10 +12,10 @@ module core {
             }
         }
         /**
-         * 得到 [min,max) 范围内的随机数
+         * 得到 [min,max] 范围内的随机数
          */
         public random(min: number, max: number): number {
-            return Math.random() * (max - min) + min << 0;
+            return Math.random() * (max - min+1) + min << 0;
         }
 
         /**

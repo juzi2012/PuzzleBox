@@ -16,6 +16,7 @@ var Box = (function (_super) {
         _this.style_w = 0;
         _this.style_h = 0;
         _this.score = 0;
+        _this.weight = 50;
         _this.boxSingleAry = [];
         _this.type = type;
         _this.color = color;
@@ -28,51 +29,67 @@ var Box = (function (_super) {
                 this.style = [[1]];
                 this.style_w = 1;
                 this.style_h = 1;
+                this.weight = 50;
                 break;
             case 2:
                 this.style = [[1], [1]];
                 this.style_w = 1;
                 this.style_h = 2;
+                this.weight = 50;
                 break;
             case 3:
                 this.style = [[1, 1, 1]];
                 this.style_w = 3;
                 this.style_h = 1;
+                this.weight = 60;
                 break;
             case 4:
                 this.style = [[1, 1], [1, 0]];
                 this.style_w = 2;
                 this.style_h = 2;
+                this.weight = 40;
                 break;
             case 5:
                 this.style = [[1, 1], [1, 1]];
                 this.style_w = 2;
                 this.style_h = 2;
+                this.weight = 30;
                 break;
             case 6:
                 this.style = [[1, 0], [1, 0], [1, 1]];
                 this.style_w = 2;
                 this.style_h = 3;
+                this.weight = 60;
                 break;
             case 7:
                 this.style = [[1], [1], [1], [1]];
                 this.style_w = 1;
                 this.style_h = 4;
+                this.weight = 50;
                 break;
             case 8:
                 this.style = [[1], [1], [1], [1], [1]];
                 this.style_w = 1;
                 this.style_h = 5;
+                this.weight = 30;
                 break;
             case 9:
                 this.style = [[1, 0, 0], [1, 0, 0], [1, 1, 1]];
                 this.style_w = 3;
                 this.style_h = 3;
+                this.weight = 30;
                 break;
             case 10:
                 this.style = [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]];
                 this.style_w = 4;
                 this.style_h = 4;
+                this.weight = 20;
+                break;
+            case 11:
+                this.style = [[1, 1, 0], [0, 1, 1]];
+                this.style_w = 3;
+                this.style_h = 2;
+                this.weight = 60;
                 break;
         }
         for (var i = 0; i < this.style.length; i++) {
@@ -88,6 +105,12 @@ var Box = (function (_super) {
                             break;
                         case 3:
                             boxSingleName = "BoxSingleBlue";
+                            break;
+                        case 4:
+                            boxSingleName = "BoxSingleGreen";
+                            break;
+                        case 5:
+                            boxSingleName = "BoxSinglePurple";
                             break;
                     }
                     var boxSingle = BoxFactory.createSingleBox(boxSingleName, this.color);

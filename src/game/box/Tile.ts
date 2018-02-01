@@ -85,6 +85,12 @@ class Tile extends egret.DisplayObjectContainer{
             case 3:
             boxSingleName="BoxSingleBlue";
             break;
+            case 4:
+            boxSingleName="BoxSingleGreen";
+            break;
+            case 5:
+            boxSingleName="BoxSinglePurple";
+            break;
         }
         let box:BoxSingle = BoxFactory.createSingleBox(boxSingleName,color);
         return box;

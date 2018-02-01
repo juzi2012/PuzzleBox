@@ -13,18 +13,16 @@ class GameTop extends Module {
         return this.content as game.UI_TopUI;
     }
 	public preShow(data?: any): void {
-		this.mContent.m_btn_restart.addClickListener(()=>{
+		this.mContent.m_btn_pause.addClickListener(()=>{
             ModuleMgr.ins.showModule(ModuleEnum.GameOver);
         },this);
 		App.EventCenter.addListener("nowscorechange",this.changeNowScore,this);
 		App.EventCenter.addListener("gameover",this.gameRestart,this);
 		GameModel.ins.maxScore = Number(egret.localStorage.getItem("puzzleBox_maxScore"));
-		this.mContent.m_txt_score_max.text=GameModel.ins.maxScore.toString();
 		this.preShowCpl();
 	}
 	private changeNowScore():void
 	{
-		this.mContent.m_txt_score_max.text=GameModel.ins.maxScore.toString();
 		let time:number=12;
 		let step:number=1;
 		if(GameModel.ins.nowScore-this.Cont.val>30){

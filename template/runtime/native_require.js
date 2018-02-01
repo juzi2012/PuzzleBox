@@ -37,9 +37,9 @@ egret_native.egretStart = function () {
 		contentWidth: 640,
 		contentHeight: 960,
 		showPaintRect: false,
-		showFPS: true,
+		showFPS: false,
 		fpsStyles: "x:300,y:0,size:12,textColor:0xffffff,bgAlpha:0.5",
-		showLog: true,
+		showLog: false,
 		logFilter: "",
 		maxTouches: 1,
 		textureScaleFactor: 1

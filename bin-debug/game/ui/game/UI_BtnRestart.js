@@ -22,7 +22,7 @@ var game;
         UI_BtnRestart.prototype.constructFromXML = function (xml) {
             _super.prototype.constructFromXML.call(this, xml);
             this.m_button = this.getControllerAt(0);
-            this.m_n1 = (this.getChildAt(0));
+            this.m_n2 = (this.getChildAt(0));
         };
         UI_BtnRestart.URL = "ui://7cac2uhfhlxd9";
         return UI_BtnRestart;

@@ -10,6 +10,6 @@ class FloatScore extends game.UI_FloatScore {
 	}
 	private playComplete():void
 	{
-		Utils.floatScore(this,new egret.Point(115,75));
+		Utils.floatScore(this,new egret.Point(340,75));
 	}
 }

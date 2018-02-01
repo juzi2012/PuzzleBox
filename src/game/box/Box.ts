@@ -7,6 +7,7 @@ class Box extends egret.DisplayObjectContainer
     public style_w:number=0
     public style_h:number=0;
     public score:number=0;
+    public weight:number=50;
     public boxSingleAry:BoxSingle[];
     public constructor(type:number,color:number){
         super();
@@ -21,51 +22,67 @@ class Box extends egret.DisplayObjectContainer
                 this.style=[[1]];
                 this.style_w = 1;
                 this.style_h = 1;
+                this.weight=50;
             break;
             case 2:
                 this.style=[[1],[1]];
                 this.style_w = 1;
                 this.style_h = 2;
+                this.weight=50;
             break;
             case 3:
                 this.style=[[1,1,1]];
                 this.style_w = 3;
                 this.style_h = 1;
+                this.weight=60;
             break;
             case 4:
                 this.style=[[1,1],[1,0]];
                 this.style_w = 2;
                 this.style_h = 2;
+                this.weight=40;
             break;
             case 5:
                 this.style=[[1,1],[1,1]];
                 this.style_w = 2;
                 this.style_h = 2;
+                this.weight=30;
             break;
             case 6:
                 this.style=[[1,0],[1,0],[1,1]];
                 this.style_w = 2;
                 this.style_h = 3;
+                this.weight=60;
             break;
             case 7:
                 this.style=[[1],[1],[1],[1]];
                 this.style_w = 1;
                 this.style_h = 4;
+                this.weight=50;
             break;
             case 8:
                 this.style=[[1],[1],[1],[1],[1]];
                 this.style_w = 1;
                 this.style_h = 5;
+                this.weight=30;
             break;
             case 9:
                 this.style=[[1,0,0],[1,0,0],[1,1,1]];
                 this.style_w = 3;
                 this.style_h = 3;
+                this.weight=30;
             break;
             case 10:
                 this.style=[[1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]];
                 this.style_w = 4;
                 this.style_h = 4;
+                this.weight=20;
+            break;
+            case 11:
+                this.style=[[1,1,0],[0,1,1]];
+                this.style_w = 3;
+                this.style_h = 2;
+                this.weight=60;
             break;
         }
         for(let i:number=0;i<this.style.length;i++){
@@ -81,6 +98,12 @@ class Box extends egret.DisplayObjectContainer
                         break;
                         case 3:
                         boxSingleName="BoxSingleBlue";
+                        break;
+                        case 4:
+                        boxSingleName ="BoxSingleGreen" 
+                        break;
+                        case 5:
+                        boxSingleName ="BoxSinglePurple" 
                         break;
                     }
                     let boxSingle:BoxSingle = BoxFactory.createSingleBox(boxSingleName,this.color);

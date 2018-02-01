@@ -17,10 +17,10 @@ var Map = (function (_super) {
         return _this;
     }
     Map.prototype.createTile = function () {
-        var bg = Utils.createFairyGuiBitmapByName("kuang");
-        bg.scale9Grid = new egret.Rectangle(12, 12, 12, 12);
-        bg.width = 640 - GameConsts.GAME_PADDING * 2;
-        bg.height = 640 - GameConsts.GAME_PADDING * 2;
+        var bg = Utils.createBitmapByName("kuang");
+        // bg.scale9Grid = new egret.Rectangle( 12,12,12,12 );
+        // bg.width=640-GameConsts.GAME_PADDING*2;
+        // bg.height=640-GameConsts.GAME_PADDING*2;
         this.addChild(bg);
         for (var i = 0; i < GameConsts.GAME_TILE_ROW; i++) {
             for (var j = 0; j < GameConsts.GAME_TILE_COLUMN; j++) {
