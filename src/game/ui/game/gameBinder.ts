@@ -7,6 +7,11 @@ module game {
 			fairygui.UIObjectFactory.setPackageItemExtension(UI_GameOverPanel.URL, UI_GameOverPanel);
 			fairygui.UIObjectFactory.setPackageItemExtension(UI_BtnRestart.URL, UI_BtnRestart);
 			fairygui.UIObjectFactory.setPackageItemExtension(UI_TopUI.URL, UI_TopUI);
+			fairygui.UIObjectFactory.setPackageItemExtension(UI_ChangePanel.URL, UI_ChangePanel);
+			fairygui.UIObjectFactory.setPackageItemExtension(UI_popBg.URL, UI_popBg);
+			fairygui.UIObjectFactory.setPackageItemExtension(UI_Btn_close.URL, UI_Btn_close);
+			fairygui.UIObjectFactory.setPackageItemExtension(UI_Btn_normal.URL, UI_Btn_normal);
+			fairygui.UIObjectFactory.setPackageItemExtension(UI_Alert.URL, UI_Alert);
 			fairygui.UIObjectFactory.setPackageItemExtension(UI_Good.URL, UI_Good);
 			fairygui.UIObjectFactory.setPackageItemExtension(UI_Cool.URL, UI_Cool);
 			fairygui.UIObjectFactory.setPackageItemExtension(UI_Btn_refresh.URL, UI_Btn_refresh);

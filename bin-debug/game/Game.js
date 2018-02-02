@@ -87,7 +87,7 @@ var Game = (function (_super) {
             box.color = color;
             box.create();
             box.x = -GameConsts.GAME_CLICK_AREA / 2 + (GameConsts.GAME_CLICK_AREA + 10) * box.pos - (box.style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4;
-            box.y = App.StageUtils.getStage().stageHeight - GameConsts.GAME_CLICK_AREA / 2 - (box.style_h / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4;
+            box.y = this["clickarea" + box.pos].y - (box.style_h / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4;
         }
         this.box = null;
     };
@@ -97,7 +97,7 @@ var Game = (function (_super) {
             var box = BoxFactory.createPuzzleBox();
             box.pos = i;
             box.x = -GameConsts.GAME_CLICK_AREA / 2 + (GameConsts.GAME_CLICK_AREA + 10) * box.pos - (box.style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4;
-            box.y = App.StageUtils.getStage().stageHeight - GameConsts.GAME_CLICK_AREA / 2 - (box.style_h / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4;
+            box.y = this["clickarea" + box.pos].y - (box.style_h / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4;
             this.mContent.displayListContainer.addChild(box);
             this.boxAry.push(box);
         }
@@ -123,7 +123,7 @@ var Game = (function (_super) {
             this.box.alpha = 0;
         }
         for (var i = 0; i < this.boxAry.length; i++) {
-            egret.Tween.get(this.boxAry[i]).to({ x: -GameConsts.GAME_CLICK_AREA / 2 + (GameConsts.GAME_CLICK_AREA + 10) * this.boxAry[i].pos - (this.boxAry[i].style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4, y: App.StageUtils.getStage().stageHeight - GameConsts.GAME_CLICK_AREA / 2 - (this.boxAry[i].style_h / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4, alpha: 1 }, 400);
+            egret.Tween.get(this.boxAry[i]).to({ x: -GameConsts.GAME_CLICK_AREA / 2 + (GameConsts.GAME_CLICK_AREA + 10) * this.boxAry[i].pos - (this.boxAry[i].style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4, y: this["clickarea" + this.boxAry[i].pos].y - (this.boxAry[i].style_h / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4, alpha: 1 }, 400);
         }
     };
     Game.prototype.startDrag = function (evt) {
@@ -187,7 +187,7 @@ var Game = (function (_super) {
         this.touchStatus = false;
         if (this.dropAble == false) {
             this.map.clearTemporary();
-            egret.Tween.get(this.box).to({ x: -GameConsts.GAME_CLICK_AREA / 2 + (GameConsts.GAME_CLICK_AREA + 10) * this.box.pos - (this.box.style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4, y: App.StageUtils.getStage().stageHeight - GameConsts.GAME_CLICK_AREA / 2 - (this.box.style_h / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4 }, 100);
+            egret.Tween.get(this.box).to({ x: -GameConsts.GAME_CLICK_AREA / 2 + (GameConsts.GAME_CLICK_AREA + 10) * this.box.pos - (this.box.style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4, y: this["clickarea" + this.box.pos].y - (this.box.style_h / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4 }, 100);
             this.box.doNormal();
         }
         else {
@@ -263,10 +263,16 @@ var Game = (function (_super) {
         this["clickarea" + pos].height = h;
         this["clickarea" + pos].anchorOffsetX = w / 2;
         this["clickarea" + pos].anchorOffsetY = h / 2;
-        this["clickarea" + pos].alpha = 0;
+        this["clickarea" + pos].alpha = 0.5;
         this["clickarea" + pos].touchEnabled = true;
         this["clickarea" + pos].x = -w / 2 + (w + 10) * pos;
         this["clickarea" + pos].y = App.StageUtils.getStage().stageHeight - GameConsts.GAME_CLICK_AREA / 2;
+        if (this["clickarea" + pos].y - (this.map.y + this.map.height) > GameConsts.GAME_CLICK_AREA / 3 * 2) {
+            this["clickarea" + pos].y = (this.map.y + this.map.height) + GameConsts.GAME_CLICK_AREA / 3 * 2;
+        }
+        if (App.StageUtils.getHeight() - this["clickarea" + pos].y > 90) {
+            egret.log("显示广告");
+        }
         this["clickarea" + pos].addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.startDrag, this);
         App.StageUtils.getStage().addEventListener(egret.TouchEvent.TOUCH_END, this.doDrop, this);
         App.StageUtils.getStage().addEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
