@@ -277,7 +277,7 @@ class Game extends Module
         this["clickarea"+pos].height=h;
         this["clickarea"+pos].anchorOffsetX=w/2;
         this["clickarea"+pos].anchorOffsetY=h/2;
-        this["clickarea"+pos].alpha=0.5;
+        this["clickarea"+pos].alpha=0;
         this["clickarea"+pos].touchEnabled=true;
         this["clickarea"+pos].x = -w/2+(w+10)*pos;
         this["clickarea"+pos].y=App.StageUtils.getStage().stageHeight-GameConsts.GAME_CLICK_AREA/2;
