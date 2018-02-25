@@ -24,7 +24,7 @@ var game;
             this.m_c1 = this.getControllerAt(0);
             this.m_n0 = (this.getChildAt(0));
             this.m_btn_ok = (this.getChildAt(1));
-            this.m_btn_ok_2 = (this.getChildAt(2));
+            this.m_btn_cancel = (this.getChildAt(2));
             this.m_txt_info = (this.getChildAt(3));
         };
         UI_Alert.URL = "ui://7cac2uhfoxah1w";

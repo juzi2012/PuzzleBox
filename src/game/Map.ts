@@ -204,6 +204,12 @@ class Map extends egret.DisplayObjectContainer{
         }
         return result;
     }
+    public addRandom(randomType:number):void
+    {
+        let randomRow:number = App.MathUtils.random(0,GameConsts.GAME_TILE_ROW-1);
+        let randomColumn:number = App.MathUtils.random(0,GameConsts.GAME_TILE_COLUMN-1);
+        this.tileDic.get(randomRow+"_"+randomColumn).addRandom(randomType);
+    }
     public dispose():void
     {
         let len:number = this.tileDic.values.length;

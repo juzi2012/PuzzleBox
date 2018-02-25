@@ -10,7 +10,8 @@ r.prototype = e.prototype, t.prototype = new r();
 };
 var Box = (function (_super) {
     __extends(Box, _super);
-    function Box(type, color) {
+    function Box(type, color, scale) {
+        if (scale === void 0) { scale = 0.4; }
         var _this = _super.call(this) || this;
         _this.style = [[1, 1, 1, 1, 1]];
         _this.style_w = 0;
@@ -21,10 +22,11 @@ var Box = (function (_super) {
         _this.boxSingleAry = [];
         _this.type = type;
         _this.color = color;
-        _this.create();
+        _this.create(scale);
         return _this;
     }
-    Box.prototype.create = function () {
+    Box.prototype.create = function (scales) {
+        if (scales === void 0) { scales = 0.4; }
         switch (this.type) {
             case 1:
                 this.style = [[1]];
@@ -116,9 +118,9 @@ var Box = (function (_super) {
                     }
                     var boxSingle = BoxFactory.createSingleBox(boxSingleName, this.color);
                     boxSingle.setPosXY(i, j);
-                    boxSingle.scaleX = boxSingle.scaleY = 0.4;
-                    boxSingle.x = (GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4) * j;
-                    boxSingle.y = (GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4) * i;
+                    boxSingle.scaleX = boxSingle.scaleY = scales;
+                    boxSingle.x = (GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * scales) * j;
+                    boxSingle.y = (GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * scales) * i;
                     this.addChild(boxSingle);
                     this.boxSingleAry.push(boxSingle);
                     this.score += 1;
@@ -148,6 +150,9 @@ var Box = (function (_super) {
         }
     };
     Box.prototype.setGray = function (state) {
+        if (this.grayState == state) {
+            return;
+        }
         //颜色矩阵数组
         var colorMatrixGray = [
             0.3, 0.6, 0, 0, 0,

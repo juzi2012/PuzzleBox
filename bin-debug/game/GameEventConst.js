@@ -7,6 +7,8 @@ var GameEventConst = (function () {
     GameEventConst.GAME_OVER = "gameover";
     GameEventConst.GAME_RESTART = "gameover";
     GameEventConst.GAME_SCORE_CHANGE = "gamescorechange";
+    GameEventConst.GAME_CHANGE_CLOSE = "gamechangeclose";
+    GameEventConst.GAME_CHANGE = "gamechange";
     return GameEventConst;
 }());
 __reflect(GameEventConst.prototype, "GameEventConst");

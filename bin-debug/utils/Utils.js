@@ -23,6 +23,9 @@ var Utils = (function () {
     Utils.floatScore = function (tar, endPos) {
         egret.Tween.get(tar).to({ x: endPos.x - tar.width / 2, y: endPos.y - tar.height / 2 }, 300).call(function () { tar.visible = false; GameModel.ins.score = GameModel.ins.scoreSign; }, this);
     };
+    Utils.floatScoreAndDispose = function (tar, endPos) {
+        egret.Tween.get(tar).to({ x: endPos.x - tar.width / 2, y: endPos.y - tar.height / 2 }, 300).call(function () { GameModel.ins.score = GameModel.ins.scoreSign; }, this);
+    };
     return Utils;
 }());
 __reflect(Utils.prototype, "Utils");

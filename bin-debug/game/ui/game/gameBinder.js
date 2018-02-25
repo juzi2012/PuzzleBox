@@ -11,6 +11,8 @@ var game;
             fairygui.UIObjectFactory.setPackageItemExtension(game.UI_GameOverPanel.URL, game.UI_GameOverPanel);
             fairygui.UIObjectFactory.setPackageItemExtension(game.UI_BtnRestart.URL, game.UI_BtnRestart);
             fairygui.UIObjectFactory.setPackageItemExtension(game.UI_TopUI.URL, game.UI_TopUI);
+            fairygui.UIObjectFactory.setPackageItemExtension(game.UI_Btn_add.URL, game.UI_Btn_add);
+            fairygui.UIObjectFactory.setPackageItemExtension(game.UI_ListItem.URL, game.UI_ListItem);
             fairygui.UIObjectFactory.setPackageItemExtension(game.UI_ChangePanel.URL, game.UI_ChangePanel);
             fairygui.UIObjectFactory.setPackageItemExtension(game.UI_popBg.URL, game.UI_popBg);
             fairygui.UIObjectFactory.setPackageItemExtension(game.UI_Btn_close.URL, game.UI_Btn_close);

@@ -6,5 +6,7 @@ enum ModuleEnum {
     GAME_MENU,
     GAME,
     GameOver,
-    GAME_TOP
+    GAME_TOP,
+    GAME_Alert,
+    GAME_Change
 }

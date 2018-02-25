@@ -13,6 +13,8 @@ class RegModuleTask{
         this.regModule(ModuleEnum.GAME, LayerEnum.SCENE, Game, []);
         this.regModule(ModuleEnum.GameOver, LayerEnum.POPUP, GameOverModule, []);
         this.regModule(ModuleEnum.GAME_TOP, LayerEnum.STATIC, GameTop, []);
+        this.regModule(ModuleEnum.GAME_Alert, LayerEnum.POPUP, Alert, []);
+        this.regModule(ModuleEnum.GAME_Change, LayerEnum.POPUP, BoxChangeModule, []);
     }
 
     private regModule(moduleId:ModuleEnum, layerKind:LayerEnum, moduleCls:any, groups:string[] = null):ModuleConfigVo

@@ -200,6 +200,11 @@ var Map = (function (_super) {
         }
         return result;
     };
+    Map.prototype.addRandom = function (randomType) {
+        var randomRow = App.MathUtils.random(0, GameConsts.GAME_TILE_ROW - 1);
+        var randomColumn = App.MathUtils.random(0, GameConsts.GAME_TILE_COLUMN - 1);
+        this.tileDic.get(randomRow + "_" + randomColumn).addRandom(randomType);
+    };
     Map.prototype.dispose = function () {
         var len = this.tileDic.values.length;
         for (var i = 0; i < len; i++) {

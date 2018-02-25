@@ -165,7 +165,11 @@ var Main = (function (_super) {
         new RegModuleTask();
         new BindFGuiTask();
         new RegRunTimeClassTask();
+        App.EventCenter.addListener(AlertMsgVo.SYSTEM_CONFIRM, this.showAlert, this);
         // this.startGame();
+    };
+    Main.prototype.showAlert = function (msg) {
+        ModuleMgr.ins.showModule(ModuleEnum.GAME_Alert, msg);
     };
     Main.prototype.startGame = function () {
         fairygui.UIPackage.addPackage("game");

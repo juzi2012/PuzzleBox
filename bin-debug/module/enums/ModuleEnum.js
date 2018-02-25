@@ -8,5 +8,7 @@ var ModuleEnum;
     ModuleEnum[ModuleEnum["GAME"] = 3] = "GAME";
     ModuleEnum[ModuleEnum["GameOver"] = 4] = "GameOver";
     ModuleEnum[ModuleEnum["GAME_TOP"] = 5] = "GAME_TOP";
+    ModuleEnum[ModuleEnum["GAME_Alert"] = 6] = "GAME_Alert";
+    ModuleEnum[ModuleEnum["GAME_Change"] = 7] = "GAME_Change";
 })(ModuleEnum || (ModuleEnum = {}));
 //# sourceMappingURL=ModuleEnum.js.map

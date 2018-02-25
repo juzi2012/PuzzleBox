@@ -17,7 +17,7 @@ class Game extends Module
     private floatScore:FloatScore;
     private floatLayer:fairygui.GComponent;
     private scale:number=1;//在做自适应的时候，全局的缩放比例
-
+    private dropTime:number=0;
     public constructor()
     {
         super();
@@ -52,6 +52,8 @@ class Game extends Module
         this.mContent.displayListContainer.addChild(this.map);
         
         App.EventCenter.addListener(GameEventConst.GAME_RESTART,this.reStartGame,this);
+        App.EventCenter.addListener(GameEventConst.GAME_CHANGE_CLOSE,this.noChangeBox,this);
+        App.EventCenter.addListener(GameEventConst.GAME_CHANGE,this.onBoxChanged,this);
 
         this.createClickBox(1);
         this.createClickBox(2);
@@ -220,6 +222,11 @@ class Game extends Module
     }
     private checkDrop():void
     {
+        this.dropTime +=1;
+        if(this.dropTime>=3){
+            this.dropTime=0;
+            this.map.addRandom(App.MathUtils.random(0,1));
+        }
         App.SoundUtils.playSound("drop",0);
         let result:any[]=this.map.checkLine();
         let score:number = 0;
@@ -251,21 +258,46 @@ class Game extends Module
         for(let i:number=0;i<this.boxAry.length;i++){
             if(this.map.checkCanGoOn(this.boxAry[i])==true){
                 canGoOn=true;
-                break;
+                this.boxAry[i].setGray(false);
+            }else{
+                this.boxAry[i].setGray(true);
             }
         }
         if(canGoOn==false){
-            this.gameover=true;
-            for(let i:number=0;i<this.boxAry.length;i++){
-                this.boxAry[i].setGray(true);
+            egret.setTimeout(()=>{AlertUtils.comfirm("Game is over,do you want to spend one star to continue?",new core.Handler(this,this.changeBox),new core.Handler(this,this.noChangeBox))},this,2000)
+        }
+    }
+    private changeBox():void
+    {
+        ModuleMgr.ins.showModule(ModuleEnum.GAME_Change,this.boxAry);
+    }
+    private noChangeBox():void
+    {
+        this.gameover=true;
+        this.gameOver();
+    }
+    private onBoxChanged(data:Box[]):void
+    {
+        for(let i:number=0;i<this.boxAry.length;i++){
+            if(data[i]!=null){
+                this.boxAry[i].dispose();
+                this.boxAry[i].type=data[i].type;
+                this.boxAry[i].color=data[i].color;
+                this.boxAry[i].create();
+                if(this.map.checkCanGoOn(this.boxAry[i])==true){
+                    this.boxAry[i].setGray(false);
+                }else{
+                    this.boxAry[i].setGray(true);
+                }
+            egret.Tween.get(this.boxAry[i]).to({x:-GameConsts.GAME_CLICK_AREA/2+(GameConsts.GAME_CLICK_AREA+10)*this.boxAry[i].pos - (this.boxAry[i].style_w/2-0.5)*GameConsts.GAME_TILE_WIDHT_AND_HEIGHT*0.4,y:this["clickarea"+this.boxAry[i].pos].y- (this.boxAry[i].style_h/2-0.5)*GameConsts.GAME_TILE_WIDHT_AND_HEIGHT*0.4,alpha:1},400);
             }
-            egret.setTimeout(this.gameOver,this,2000);
         }
     }
     private gameOver():void
     {
         App.SoundUtils.playSound("gameover",0);
         this.gameover=true;
+        this.dropTime=0;
         ModuleMgr.ins.showModule(ModuleEnum.GameOver,[]);
     }
     private createClickBox(pos:number):void

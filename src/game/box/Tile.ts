@@ -7,6 +7,8 @@ class Tile extends egret.DisplayObjectContainer{
     public temporaryBox:BoxSingle;
     public officalBox:BoxSingle;
     public color:Number;
+    public wenhao:egret.Bitmap;
+    public randomType:number=-1;
     public constructor(row:number,column:number)
     {
         super();
@@ -34,6 +36,9 @@ class Tile extends egret.DisplayObjectContainer{
         if(this.officalBox!=null){
             this.officalBox.alpha=0;
         }
+        if(this.wenhao!=null){
+            this.setChildIndex(this.wenhao,this.numChildren-1);
+        }
     }
     public clearTemporary():void
     {
@@ -56,15 +61,51 @@ class Tile extends egret.DisplayObjectContainer{
         this.color = color;
         this.officalBox = this.createBox(color);
         this.addChild(this.officalBox);
+        if(this.wenhao!=null){
+            this.setChildIndex(this.wenhao,this.numChildren-1);
+        }
+    }
+    //添加随机奖励或者惩罚
+    public addRandom(randomType:number):void{
+        this.randomType=randomType;
+        if(this.wenhao==null){
+            this.wenhao = Utils.createFairyGuiBitmapByName("wenhao");
+            this.wenhao.anchorOffsetX = this.wenhao.width/2;
+            this.wenhao.anchorOffsetY = this.wenhao.height/2;
+            this.wenhao.scaleX=this.wenhao.scaleY=1.4;
+            this.addChild(this.wenhao);
+            egret.Tween.get(this.wenhao).to( {scaleX:1,scaleY:1}, 200);
+        }
     }
     public doDipsear():void
     {
         this.clearTemporary();
+        if(this.wenhao!=null){
+            App.DisplayUtils.removeFromParent(this.wenhao);
+            this.wenhao=null;
+            /*if(this.randomType==0){//-
+                let score:FloatScore = FloatScore.createInstance() as FloatScore;
+                score.data=-10;
+                this.addChild(score.displayObject)
+                Utils.floatScoreAndDispose(score,new egret.Point(0,-100));
+            }else if(this.randomType==1){//+
+                let score:FloatScore = FloatScore.createInstance() as FloatScore;
+                score.data=10;
+                this.addChild(score.displayObject)
+                Utils.floatScoreAndDispose(score,new egret.Point(0,-100));
+            }*/
+            this.randomType=-1;
+        }
         this.isEmpty=true;
         egret.Tween.get(this.officalBox).to( {scaleX:0,scaleY:0}, 200).call(this.dispose,this);
     }
     public dispose():void
     {
+        if(this.wenhao!=null){
+            App.DisplayUtils.removeFromParent(this.wenhao);
+            this.wenhao=null;
+            this.randomType=-1;
+        }
         this.isEmpty=true;
         if(this.officalBox!=null){
             if(this.officalBox.parent!=null)this.officalBox.parent.removeChild(this.officalBox);

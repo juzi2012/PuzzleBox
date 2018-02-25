@@ -6,5 +6,6 @@ class RegRunTimeClassTask{
 
     private exec():void{			
         fairygui.UIObjectFactory.setPackageItemExtension(game.UI_FloatScore.URL, FloatScore);
+        fairygui.UIObjectFactory.setPackageItemExtension(game.UI_ListItem.URL, ChangeListItem);
     }
 }

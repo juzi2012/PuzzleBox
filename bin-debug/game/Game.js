@@ -21,6 +21,7 @@ var Game = (function (_super) {
         _this.gameover = false;
         _this.touchCon = 0;
         _this.scale = 1; //在做自适应的时候，全局的缩放比例
+        _this.dropTime = 0;
         _this.touchStatus = false;
         _this._distance = new egret.Point();
         return _this;
@@ -55,6 +56,8 @@ var Game = (function (_super) {
         }
         this.mContent.displayListContainer.addChild(this.map);
         App.EventCenter.addListener(GameEventConst.GAME_RESTART, this.reStartGame, this);
+        App.EventCenter.addListener(GameEventConst.GAME_CHANGE_CLOSE, this.noChangeBox, this);
+        App.EventCenter.addListener(GameEventConst.GAME_CHANGE, this.onBoxChanged, this);
         this.createClickBox(1);
         this.createClickBox(2);
         this.createClickBox(3);
@@ -207,6 +210,12 @@ var Game = (function (_super) {
         this.dropAble = false;
     };
     Game.prototype.checkDrop = function () {
+        var _this = this;
+        this.dropTime += 1;
+        if (this.dropTime >= 3) {
+            this.dropTime = 0;
+            this.map.addRandom(App.MathUtils.random(0, 1));
+        }
         App.SoundUtils.playSound("drop", 0);
         var result = this.map.checkLine();
         var score = 0;
@@ -239,20 +248,44 @@ var Game = (function (_super) {
         for (var i = 0; i < this.boxAry.length; i++) {
             if (this.map.checkCanGoOn(this.boxAry[i]) == true) {
                 canGoOn = true;
-                break;
+                this.boxAry[i].setGray(false);
+            }
+            else {
+                this.boxAry[i].setGray(true);
             }
         }
         if (canGoOn == false) {
-            this.gameover = true;
-            for (var i = 0; i < this.boxAry.length; i++) {
-                this.boxAry[i].setGray(true);
+            egret.setTimeout(function () { AlertUtils.comfirm("Game is over,do you want to spend one star to continue?", new core.Handler(_this, _this.changeBox), new core.Handler(_this, _this.noChangeBox)); }, this, 2000);
+        }
+    };
+    Game.prototype.changeBox = function () {
+        ModuleMgr.ins.showModule(ModuleEnum.GAME_Change, this.boxAry);
+    };
+    Game.prototype.noChangeBox = function () {
+        this.gameover = true;
+        this.gameOver();
+    };
+    Game.prototype.onBoxChanged = function (data) {
+        for (var i = 0; i < this.boxAry.length; i++) {
+            if (data[i] != null) {
+                this.boxAry[i].dispose();
+                this.boxAry[i].type = data[i].type;
+                this.boxAry[i].color = data[i].color;
+                this.boxAry[i].create();
+                if (this.map.checkCanGoOn(this.boxAry[i]) == true) {
+                    this.boxAry[i].setGray(false);
+                }
+                else {
+                    this.boxAry[i].setGray(true);
+                }
+                egret.Tween.get(this.boxAry[i]).to({ x: -GameConsts.GAME_CLICK_AREA / 2 + (GameConsts.GAME_CLICK_AREA + 10) * this.boxAry[i].pos - (this.boxAry[i].style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4, y: this["clickarea" + this.boxAry[i].pos].y - (this.boxAry[i].style_h / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4, alpha: 1 }, 400);
             }
-            egret.setTimeout(this.gameOver, this, 2000);
         }
     };
     Game.prototype.gameOver = function () {
         App.SoundUtils.playSound("gameover", 0);
         this.gameover = true;
+        this.dropTime = 0;
         ModuleMgr.ins.showModule(ModuleEnum.GameOver, []);
     };
     Game.prototype.createClickBox = function (pos) {

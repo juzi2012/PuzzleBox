@@ -38,6 +38,7 @@ var game;
             this.m_add1 = (this.getChildAt(14));
             this.m_add2 = (this.getChildAt(15));
             this.m_add3 = (this.getChildAt(16));
+            this.m_list = (this.getChildAt(17));
         };
         UI_ChangePanel.URL = "ui://7cac2uhfoxah1i";
         return UI_ChangePanel;

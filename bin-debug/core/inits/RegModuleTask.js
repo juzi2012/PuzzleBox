@@ -15,6 +15,8 @@ var RegModuleTask = (function () {
         this.regModule(ModuleEnum.GAME, LayerEnum.SCENE, Game, []);
         this.regModule(ModuleEnum.GameOver, LayerEnum.POPUP, GameOverModule, []);
         this.regModule(ModuleEnum.GAME_TOP, LayerEnum.STATIC, GameTop, []);
+        this.regModule(ModuleEnum.GAME_Alert, LayerEnum.POPUP, Alert, []);
+        this.regModule(ModuleEnum.GAME_Change, LayerEnum.POPUP, BoxChangeModule, []);
     };
     RegModuleTask.prototype.regModule = function (moduleId, layerKind, moduleCls, groups) {
         if (groups === void 0) { groups = null; }

@@ -14,6 +14,7 @@ var Tile = (function (_super) {
         var _this = _super.call(this) || this;
         _this.isEmpty = true;
         _this.isTemporary = false;
+        _this.randomType = -1;
         _this.row = row;
         _this.column = column;
         _this.createNormal();
@@ -38,6 +39,9 @@ var Tile = (function (_super) {
         if (this.officalBox != null) {
             this.officalBox.alpha = 0;
         }
+        if (this.wenhao != null) {
+            this.setChildIndex(this.wenhao, this.numChildren - 1);
+        }
     };
     Tile.prototype.clearTemporary = function () {
         if (this.temporaryBox != null) {
@@ -58,13 +62,49 @@ var Tile = (function (_super) {
         this.color = color;
         this.officalBox = this.createBox(color);
         this.addChild(this.officalBox);
+        if (this.wenhao != null) {
+            this.setChildIndex(this.wenhao, this.numChildren - 1);
+        }
+    };
+    //添加随机奖励或者惩罚
+    Tile.prototype.addRandom = function (randomType) {
+        this.randomType = randomType;
+        if (this.wenhao == null) {
+            this.wenhao = Utils.createFairyGuiBitmapByName("wenhao");
+            this.wenhao.anchorOffsetX = this.wenhao.width / 2;
+            this.wenhao.anchorOffsetY = this.wenhao.height / 2;
+            this.wenhao.scaleX = this.wenhao.scaleY = 1.4;
+            this.addChild(this.wenhao);
+            egret.Tween.get(this.wenhao).to({ scaleX: 1, scaleY: 1 }, 200);
+        }
     };
     Tile.prototype.doDipsear = function () {
         this.clearTemporary();
+        if (this.wenhao != null) {
+            App.DisplayUtils.removeFromParent(this.wenhao);
+            this.wenhao = null;
+            /*if(this.randomType==0){//-
+                let score:FloatScore = FloatScore.createInstance() as FloatScore;
+                score.data=-10;
+                this.addChild(score.displayObject)
+                Utils.floatScoreAndDispose(score,new egret.Point(0,-100));
+            }else if(this.randomType==1){//+
+                let score:FloatScore = FloatScore.createInstance() as FloatScore;
+                score.data=10;
+                this.addChild(score.displayObject)
+                Utils.floatScoreAndDispose(score,new egret.Point(0,-100));
+            }*/
+            this.randomType = -1;
+        }
         this.isEmpty = true;
         egret.Tween.get(this.officalBox).to({ scaleX: 0, scaleY: 0 }, 200).call(this.dispose, this);
     };
     Tile.prototype.dispose = function () {
+        if (this.wenhao != null) {
+            App.DisplayUtils.removeFromParent(this.wenhao);
+            this.wenhao = null;
+            this.randomType = -1;
+        }
         this.isEmpty = true;
         if (this.officalBox != null) {
             if (this.officalBox.parent != null)

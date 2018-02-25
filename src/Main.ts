@@ -107,7 +107,14 @@ class Main extends egret.DisplayObjectContainer {
         new BindFGuiTask();
         new RegRunTimeClassTask();
 
+
+        App.EventCenter.addListener(AlertMsgVo.SYSTEM_CONFIRM,this.showAlert,this);
+
         // this.startGame();
+    }
+    private showAlert(msg:AlertMsgVo):void
+    {
+        ModuleMgr.ins.showModule(ModuleEnum.GAME_Alert,msg);
     }
     private startGame():void
     {

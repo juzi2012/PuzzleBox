@@ -9,7 +9,6 @@ var Loading;
         }
         LoadingBinder.bindAll = function () {
             fairygui.UIObjectFactory.setPackageItemExtension(Loading.UI_LoadingBar.URL, Loading.UI_LoadingBar);
-            fairygui.UIObjectFactory.setPackageItemExtension(Loading.UI_LoadingModule.URL, Loading.UI_LoadingModule);
         };
         return LoadingBinder;
     }());

@@ -18,9 +18,10 @@ module game {
 		public m_btn_ok:UI_Btn_normal;
 		public m_n27:fairygui.GImage;
 		public m_txt_star:fairygui.GTextField;
-		public m_add1:fairygui.GImage;
-		public m_add2:fairygui.GImage;
-		public m_add3:fairygui.GImage;
+		public m_add1:UI_Btn_add;
+		public m_add2:UI_Btn_add;
+		public m_add3:UI_Btn_add;
+		public m_list:fairygui.GList;
 
 		public static URL:string = "ui://7cac2uhfoxah1i";
 
@@ -49,9 +50,10 @@ module game {
 			this.m_btn_ok = <UI_Btn_normal><any>(this.getChildAt(11));
 			this.m_n27 = <fairygui.GImage><any>(this.getChildAt(12));
 			this.m_txt_star = <fairygui.GTextField><any>(this.getChildAt(13));
-			this.m_add1 = <fairygui.GImage><any>(this.getChildAt(14));
-			this.m_add2 = <fairygui.GImage><any>(this.getChildAt(15));
-			this.m_add3 = <fairygui.GImage><any>(this.getChildAt(16));
+			this.m_add1 = <UI_Btn_add><any>(this.getChildAt(14));
+			this.m_add2 = <UI_Btn_add><any>(this.getChildAt(15));
+			this.m_add3 = <UI_Btn_add><any>(this.getChildAt(16));
+			this.m_list = <fairygui.GList><any>(this.getChildAt(17));
 		}
 	}
 }

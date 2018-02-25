@@ -10,14 +10,14 @@ class Box extends egret.DisplayObjectContainer
     public weight:number=50;
     public boxSingleAry:BoxSingle[];
     public grayState:boolean=false;
-    public constructor(type:number,color:number){
+    public constructor(type:number,color:number,scale:number=0.4){
         super();
         this.boxSingleAry = [];
         this.type=type;
         this.color = color;
-        this.create();
+        this.create(scale);
     }
-    public create():void{
+    public create(scales:number=0.4):void{
         switch(this.type){
             case 1:
                 this.style=[[1]];
@@ -109,9 +109,9 @@ class Box extends egret.DisplayObjectContainer
                     }
                     let boxSingle:BoxSingle = BoxFactory.createSingleBox(boxSingleName,this.color);
                     boxSingle.setPosXY(i,j);
-                    boxSingle.scaleX=boxSingle.scaleY=0.4;
-                    boxSingle.x = (GameConsts.GAME_TILE_WIDHT_AND_HEIGHT*0.4)*j;
-                    boxSingle.y = (GameConsts.GAME_TILE_WIDHT_AND_HEIGHT*0.4)*i;
+                    boxSingle.scaleX=boxSingle.scaleY=scales;
+                    boxSingle.x = (GameConsts.GAME_TILE_WIDHT_AND_HEIGHT*scales)*j;
+                    boxSingle.y = (GameConsts.GAME_TILE_WIDHT_AND_HEIGHT*scales)*i;
                     this.addChild(boxSingle);
                     this.boxSingleAry.push(boxSingle);
 
@@ -146,6 +146,9 @@ class Box extends egret.DisplayObjectContainer
     }
     public setGray(state:boolean):void
     {
+        if(this.grayState==state){
+            return;
+        }
         //颜色矩阵数组
         let colorMatrixGray = [
             0.3,0.6,0,0,0,

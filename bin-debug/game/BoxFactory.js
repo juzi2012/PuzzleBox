@@ -4,23 +4,36 @@ var __reflect = (this && this.__reflect) || function (p, c, t) {
 var BoxFactory = (function () {
     function BoxFactory() {
     }
-    BoxFactory.createPuzzleBox = function () {
-        var type = 0; //App.MathUtils.random(1,GameConsts.GAME_BOX_TYPE_NUM);
-        var sum = 0;
-        var data = { "1": 30, "2": 50, "3": 60, "4": 40, "5": 30, "6": 60, "7": 50, "8": 30, "9": 30, "10": 20, "11": 60 };
-        for (var i in data) {
-            sum += Number(data[i]);
+    BoxFactory.createPuzzleBox = function (mtype, mcolor, mscale) {
+        var type = 0;
+        if (mtype != null) {
+            type = mtype;
         }
-        var t = App.MathUtils.random(0, sum - 1);
-        for (var i in data) {
-            t -= data[i];
-            if (t < 0) {
-                type = Number(i);
-                break;
+        else {
+            var sum = 0;
+            var data = { "1": 30, "2": 50, "3": 60, "4": 40, "5": 30, "6": 60, "7": 50, "8": 30, "9": 30, "10": 20, "11": 60 };
+            for (var i in data) {
+                sum += Number(data[i]);
+            }
+            var t = App.MathUtils.random(0, sum - 1);
+            for (var i in data) {
+                t -= data[i];
+                if (t < 0) {
+                    type = Number(i);
+                    break;
+                }
             }
         }
         var color = App.MathUtils.random(1, GameConsts.GAME_BOX_COLOR_NUM);
-        var box = new Box(type, color);
+        if (mcolor != null) {
+            color = mcolor;
+        }
+        // type = 10;
+        var scale = 0.4;
+        if (mscale != null) {
+            scale = mscale;
+        }
+        var box = new Box(type, color, scale);
         return box;
     };
     BoxFactory.createSingleBox = function (boxSingleName, color) {

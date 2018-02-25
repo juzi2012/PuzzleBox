@@ -8,6 +8,7 @@ var RegRunTimeClassTask = (function () {
     }
     RegRunTimeClassTask.prototype.exec = function () {
         fairygui.UIObjectFactory.setPackageItemExtension(game.UI_FloatScore.URL, FloatScore);
+        fairygui.UIObjectFactory.setPackageItemExtension(game.UI_ListItem.URL, ChangeListItem);
     };
     return RegRunTimeClassTask;
 }());
