@@ -42,12 +42,19 @@ var BoxChangeModule = (function (_super) {
         this.mContent.m_add1.addClickListener(this.addone, this);
         this.mContent.m_add2.addClickListener(this.addtwo, this);
         this.mContent.m_add3.addClickListener(this.addthree, this);
+        this.mContent.m_btn_del1.addClickListener(this.delone, this);
+        this.mContent.m_btn_del2.addClickListener(this.deltwo, this);
+        this.mContent.m_btn_del3.addClickListener(this.delthree, this);
         this.mContent.m_list.visible = false;
         this.mContent.m_list.itemRenderer = this.RenderListItem;
         this.mContent.m_list.callbackThisObj = this;
         this.mContent.m_list.addEventListener(fairygui.ItemEvent.CLICK, this.onClickItem, this);
         this.mContent.m_btn_ok.addClickListener(this.onOkClick, this);
+        App.EventCenter.addListener(GameEventConst.GAME_STAR_CHANGE, this.changeStar, this);
         this.preShowCpl();
+    };
+    BoxChangeModule.prototype.changeStar = function () {
+        this.mContent.m_txt_star.text = GameModel.ins.starNum.toString();
     };
     BoxChangeModule.prototype.onClickItem = function (evt) {
         var item = evt.itemObject;
@@ -55,7 +62,7 @@ var BoxChangeModule = (function (_super) {
         this.mContent.m_list.visible = false;
     };
     BoxChangeModule.prototype.addBox = function (index) {
-        this.mContent["m_add" + (this.selectBoxIndex + 1)].alpha = 0;
+        this.mContent["m_c" + (this.selectBoxIndex + 1)].selectedIndex = 1;
         if (this["box" + this.selectBoxIndex] == null) {
             this["box" + this.selectBoxIndex] = BoxFactory.createPuzzleBox(index + 1, this.selectColor, 0.3);
         }
@@ -65,21 +72,9 @@ var BoxChangeModule = (function (_super) {
             this["box" + this.selectBoxIndex].color = this.selectColor;
             this["box" + this.selectBoxIndex].create(0.3);
         }
-        this.mContent.displayListContainer.addChild(this["box" + this.selectBoxIndex]);
-        this["box" + this.selectBoxIndex].x = 380 - (this["box" + this.selectBoxIndex].style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.3;
-        this["box" + this.selectBoxIndex].y = 195 + 110 * this.selectBoxIndex - (this["box" + this.selectBoxIndex].style_h / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.3;
-        /*}else{
-            if(this.selectBoxIndex==0){
-                this.mContent.m_add1.alpha=1;
-            }else if(this.selectBoxIndex==1){
-                this.mContent.m_add2.alpha=1;
-            }else if(this.selectBoxIndex==2){
-                this.mContent.m_add3.alpha=1;
-            }
-            this["box"+this.selectBoxIndex].dispose();
-            App.DisplayUtils.removeFromParent(this["box"+this.selectBoxIndex]);
-            this["box"+this.selectBoxIndex]=null;
-        }*/
+        this.mContent["m_content" + (this.selectBoxIndex + 1)].displayObject.addChild(this["box" + this.selectBoxIndex]);
+        this["box" + this.selectBoxIndex].x = 50 - (this["box" + this.selectBoxIndex].style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.3;
+        this["box" + this.selectBoxIndex].y = 50 - (this["box" + this.selectBoxIndex].style_h / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.3;
     };
     BoxChangeModule.prototype.addone = function () {
         this.selectColor = this.boxAry[0].color;
@@ -99,17 +94,66 @@ var BoxChangeModule = (function (_super) {
         this.mContent.m_list.visible = true;
         this.mContent.m_list.numItems = 11;
     };
+    BoxChangeModule.prototype.delone = function () {
+        this.mContent.m_c1.selectedIndex = 0;
+        if (this.box0 != null) {
+            this.box0.dispose();
+            App.DisplayUtils.removeFromParent(this.box0);
+            this.box0 = null;
+        }
+    };
+    BoxChangeModule.prototype.deltwo = function () {
+        this.mContent.m_c2.selectedIndex = 0;
+        if (this.box1 != null) {
+            this.box1.dispose();
+            App.DisplayUtils.removeFromParent(this.box1);
+            this.box1 = null;
+        }
+    };
+    BoxChangeModule.prototype.delthree = function () {
+        this.mContent.m_c3.selectedIndex = 0;
+        if (this.box2 != null) {
+            this.box2.dispose();
+            App.DisplayUtils.removeFromParent(this.box2);
+            this.box2 = null;
+        }
+    };
     BoxChangeModule.prototype.RenderListItem = function (index, obj) {
         var item = obj;
         item.setPivot(0.5, 0.5);
         item.setData(index, this.selectColor);
     };
     BoxChangeModule.prototype.show = function (data) {
+        this.mContent.m_txt_star.text = GameModel.ins.star.toString();
         _super.prototype.show.call(this, data);
     };
     BoxChangeModule.prototype.onOkClick = function () {
-        App.EventCenter.dispatch(GameEventConst.GAME_CHANGE, [this.box0, this.box1, this.box2]);
-        ModuleMgr.ins.closeModule(ModuleEnum.GAME_Change);
+        if (this.box0 == null && this.box1 == null && this.box2 == null) {
+            this.onClose();
+        }
+        else {
+            var sum = 0;
+            if (this.box0 != null) {
+                sum += 1;
+            }
+            if (this.box1 != null) {
+                sum += 1;
+            }
+            if (this.box2 != null) {
+                sum += 1;
+            }
+            if (sum <= GameModel.ins.star) {
+                App.EventCenter.dispatch(GameEventConst.GAME_CHANGE, [this.box0, this.box1, this.box2]);
+                ModuleMgr.ins.closeModule(ModuleEnum.GAME_Change);
+                GameModel.ins.star -= sum;
+            }
+            else {
+                AlertUtils.comfirm("Star num is not enough, get star  for free?", new core.Handler(this, this.callAd));
+            }
+        }
+    };
+    BoxChangeModule.prototype.callAd = function () {
+        egret.ExternalInterface.call("sendToNative", "1");
     };
     BoxChangeModule.prototype.onClose = function () {
         App.EventCenter.dispatch(GameEventConst.GAME_CHANGE_CLOSE);

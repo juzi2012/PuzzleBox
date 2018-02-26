@@ -16,9 +16,11 @@ class GameConsts {
 
 	static GAME_BOX_COLOR_NUM:number=5;
 	static GAME_BOX_TYPE_NUM:number=11;
+	static GAME_STAR_INIT:number=3;
 
 
 
 	static GAME_LOCALSAVE_SOUND:string="PuzzleBox_"+"GAME_LOCALSAVE_SOUND";
 	static GAME_LOCALSAVE_SCOREMAX:string="PuzzleBox_"+"GAME_LOCALSAVE_SOUND";
+	static GAME_LOCALSAVE_STARS:string="PuzzleBox_"+"GAME_LOCALSAVE_STARS";
 }

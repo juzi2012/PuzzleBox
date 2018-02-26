@@ -6,4 +6,5 @@ class GameEventConst {
 	static GAME_SCORE_CHANGE:string="gamescorechange";
 	static GAME_CHANGE_CLOSE:string="gamechangeclose";
 	static GAME_CHANGE:string="gamechange";
+	static GAME_STAR_CHANGE:string="gamestarchange";
 }

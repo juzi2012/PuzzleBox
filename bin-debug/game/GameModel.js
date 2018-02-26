@@ -32,6 +32,21 @@ var GameModel = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(GameModel.prototype, "star", {
+        get: function () {
+            if (this.starNum == null) {
+                this.starNum = Number(egret.localStorage.getItem(GameConsts.GAME_LOCALSAVE_STARS));
+            }
+            return this.starNum;
+        },
+        set: function (value) {
+            this.starNum = value;
+            egret.localStorage.setItem(GameConsts.GAME_LOCALSAVE_STARS, this.starNum.toString());
+            App.EventCenter.dispatch(GameEventConst.GAME_STAR_CHANGE);
+        },
+        enumerable: true,
+        configurable: true
+    });
     GameModel.prototype.restart = function () {
         this.nowScore = 0;
     };

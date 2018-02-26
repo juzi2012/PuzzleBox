@@ -110,6 +110,11 @@ class Main extends egret.DisplayObjectContainer {
 
         App.EventCenter.addListener(AlertMsgVo.SYSTEM_CONFIRM,this.showAlert,this);
 
+        // TypeScript 代码
+        egret.ExternalInterface.addCallback("sendToTs", function (message:string) {
+            console.log("message form native : " + message);//message form native : message from native
+            GameModel.ins.star+=3;
+        });
         // this.startGame();
     }
     private showAlert(msg:AlertMsgVo):void

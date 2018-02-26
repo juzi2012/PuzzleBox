@@ -17,8 +17,10 @@ var GameConsts = (function () {
     GameConsts.GAME_BOX_INIT_NEW = 600;
     GameConsts.GAME_BOX_COLOR_NUM = 5;
     GameConsts.GAME_BOX_TYPE_NUM = 11;
+    GameConsts.GAME_STAR_INIT = 3;
     GameConsts.GAME_LOCALSAVE_SOUND = "PuzzleBox_" + "GAME_LOCALSAVE_SOUND";
     GameConsts.GAME_LOCALSAVE_SCOREMAX = "PuzzleBox_" + "GAME_LOCALSAVE_SOUND";
+    GameConsts.GAME_LOCALSAVE_STARS = "PuzzleBox_" + "GAME_LOCALSAVE_STARS";
     return GameConsts;
 }());
 __reflect(GameConsts.prototype, "GameConsts");

@@ -50,8 +50,13 @@ var GameTop = (function (_super) {
             _this.mContent.m_btnctrl.selectedIndex = 0;
         }, this);
         App.EventCenter.addListener(GameEventConst.GAME_SCORE_CHANGE, this.changeNowScore, this);
+        App.EventCenter.addListener(GameEventConst.GAME_STAR_CHANGE, this.changeStar, this);
         App.EventCenter.addListener(GameEventConst.GAME_RESTART, this.gameRestart, this);
         GameModel.ins.maxScore = Number(egret.localStorage.getItem(GameConsts.GAME_LOCALSAVE_SCOREMAX));
+        if (egret.localStorage.getItem(GameConsts.GAME_LOCALSAVE_STARS) == null) {
+            GameModel.ins.star = GameConsts.GAME_STAR_INIT;
+        }
+        this.mContent.m_txt_star.text = GameModel.ins.star.toString();
         this.preShowCpl();
     };
     GameTop.prototype.changeNowScore = function () {
@@ -78,6 +83,9 @@ var GameTop = (function (_super) {
             egret.clearInterval(this.interval);
         }
         this.mContent.m_txt_score.text = Number(this.Cont.val).toString();
+    };
+    GameTop.prototype.changeStar = function () {
+        this.mContent.m_txt_star.text = GameModel.ins.starNum.toString();
     };
     GameTop.prototype.gameRestart = function () {
         this.mContent.m_txt_score.text = "0";

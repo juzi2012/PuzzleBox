@@ -166,6 +166,11 @@ var Main = (function (_super) {
         new BindFGuiTask();
         new RegRunTimeClassTask();
         App.EventCenter.addListener(AlertMsgVo.SYSTEM_CONFIRM, this.showAlert, this);
+        // TypeScript 代码
+        egret.ExternalInterface.addCallback("sendToTs", function (message) {
+            console.log("message form native : " + message); //message form native : message from native
+            GameModel.ins.star += 3;
+        });
         // this.startGame();
     };
     Main.prototype.showAlert = function (msg) {

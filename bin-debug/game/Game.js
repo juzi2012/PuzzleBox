@@ -115,7 +115,7 @@ var Game = (function (_super) {
         }
         if (this.box != null) {
             this.box.dispose();
-            var type = 10; //App.MathUtils.random(1,11);
+            var type = App.MathUtils.random(1, 11);
             var color = App.MathUtils.random(1, 4);
             this.box.type = type;
             this.box.color = color;
@@ -211,11 +211,11 @@ var Game = (function (_super) {
     };
     Game.prototype.checkDrop = function () {
         var _this = this;
-        this.dropTime += 1;
-        if (this.dropTime >= 3) {
-            this.dropTime = 0;
-            this.map.addRandom(App.MathUtils.random(0, 1));
-        }
+        /*this.dropTime +=1;
+        if(this.dropTime>=3){
+            this.dropTime=0;
+            this.map.addRandom(App.MathUtils.random(0,1));
+        }*/
         App.SoundUtils.playSound("drop", 0);
         var result = this.map.checkLine();
         var score = 0;
@@ -228,7 +228,11 @@ var Game = (function (_super) {
             this.floatScore.data = addScore;
             score = GameModel.ins.nowScore + addScore;
             GameModel.ins.scoreSign = score;
-            if (result[2] > 4) {
+            if (result[2] > 5) {
+                GameModel.ins.star += 1;
+                this.floatCool(new egret.Point(result[0], result[1]));
+            }
+            else if (result[2] > 4) {
                 this.floatCool(new egret.Point(result[0], result[1]));
             }
             else if (result[2] > 2) {
@@ -266,7 +270,9 @@ var Game = (function (_super) {
         this.gameOver();
     };
     Game.prototype.onBoxChanged = function (data) {
+        var _this = this;
         App.SoundUtils.playSound("bg", 1, -1);
+        var canGoOn = false;
         for (var i = 0; i < this.boxAry.length; i++) {
             if (data[i] != null) {
                 this.boxAry[i].dispose();
@@ -274,12 +280,16 @@ var Game = (function (_super) {
                 this.boxAry[i].color = data[i].color;
                 this.boxAry[i].create();
                 if (this.map.checkCanGoOn(this.boxAry[i]) == true) {
+                    canGoOn = true;
                     this.boxAry[i].setGray(false);
                 }
                 else {
                     this.boxAry[i].setGray(true);
                 }
                 egret.Tween.get(this.boxAry[i]).to({ x: -GameConsts.GAME_CLICK_AREA / 2 + (GameConsts.GAME_CLICK_AREA + 10) * this.boxAry[i].pos - (this.boxAry[i].style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4, y: this["clickarea" + this.boxAry[i].pos].y - (this.boxAry[i].style_h / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.4, alpha: 1 }, 400);
+                if (canGoOn == false) {
+                    egret.setTimeout(function () { AlertUtils.comfirm("Game is over,do you want to spend stars to continue?", new core.Handler(_this, _this.changeBox), new core.Handler(_this, _this.noChangeBox)); }, this, 2000);
+                }
             }
         }
     };
@@ -304,8 +314,9 @@ var Game = (function (_super) {
         if (this["clickarea" + pos].y - (this.map.y + this.map.height) > GameConsts.GAME_CLICK_AREA / 3 * 2) {
             this["clickarea" + pos].y = (this.map.y + this.map.height) + GameConsts.GAME_CLICK_AREA / 3 * 2;
         }
-        if (App.StageUtils.getHeight() - this["clickarea" + pos].y > 90) {
+        if (App.StageUtils.getHeight() - this["clickarea" + pos].y - GameConsts.GAME_CLICK_AREA / 2 > 90) {
             egret.log("显示广告");
+            egret.ExternalInterface.call("sendToNative", "2");
         }
         this["clickarea" + pos].addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.startDrag, this);
         App.StageUtils.getStage().addEventListener(egret.TouchEvent.TOUCH_END, this.doDrop, this);
