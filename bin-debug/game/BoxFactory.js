@@ -28,7 +28,7 @@ var BoxFactory = (function () {
         if (mcolor != null) {
             color = mcolor;
         }
-        // type = 10;
+        type = 10;
         var scale = 0.4;
         if (mscale != null) {
             scale = mscale;

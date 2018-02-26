@@ -122,7 +122,7 @@ class Game extends Module
 
         if(this.box!=null){
             this.box.dispose();
-            let type:number=App.MathUtils.random(1,11);
+            let type:number=10//App.MathUtils.random(1,11);
             let color:number=App.MathUtils.random(1,4);
             this.box.type=type;
             this.box.color=color;
@@ -264,7 +264,7 @@ class Game extends Module
             }
         }
         if(canGoOn==false){
-            egret.setTimeout(()=>{AlertUtils.comfirm("Game is over,do you want to spend one star to continue?",new core.Handler(this,this.changeBox),new core.Handler(this,this.noChangeBox))},this,2000)
+            egret.setTimeout(()=>{AlertUtils.comfirm("Game is over,do you want to spend stars to continue?",new core.Handler(this,this.changeBox),new core.Handler(this,this.noChangeBox))},this,2000)
         }
     }
     private changeBox():void
@@ -278,6 +278,7 @@ class Game extends Module
     }
     private onBoxChanged(data:Box[]):void
     {
+        App.SoundUtils.playSound("bg",1,-1);
         for(let i:number=0;i<this.boxAry.length;i++){
             if(data[i]!=null){
                 this.boxAry[i].dispose();

@@ -115,7 +115,7 @@ var Game = (function (_super) {
         }
         if (this.box != null) {
             this.box.dispose();
-            var type = App.MathUtils.random(1, 11);
+            var type = 10; //App.MathUtils.random(1,11);
             var color = App.MathUtils.random(1, 4);
             this.box.type = type;
             this.box.color = color;
@@ -255,7 +255,7 @@ var Game = (function (_super) {
             }
         }
         if (canGoOn == false) {
-            egret.setTimeout(function () { AlertUtils.comfirm("Game is over,do you want to spend one star to continue?", new core.Handler(_this, _this.changeBox), new core.Handler(_this, _this.noChangeBox)); }, this, 2000);
+            egret.setTimeout(function () { AlertUtils.comfirm("Game is over,do you want to spend stars to continue?", new core.Handler(_this, _this.changeBox), new core.Handler(_this, _this.noChangeBox)); }, this, 2000);
         }
     };
     Game.prototype.changeBox = function () {
@@ -266,6 +266,7 @@ var Game = (function (_super) {
         this.gameOver();
     };
     Game.prototype.onBoxChanged = function (data) {
+        App.SoundUtils.playSound("bg", 1, -1);
         for (var i = 0; i < this.boxAry.length; i++) {
             if (data[i] != null) {
                 this.boxAry[i].dispose();

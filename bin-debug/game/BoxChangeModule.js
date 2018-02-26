@@ -55,6 +55,7 @@ var BoxChangeModule = (function (_super) {
         this.mContent.m_list.visible = false;
     };
     BoxChangeModule.prototype.addBox = function (index) {
+        this.mContent["m_add" + (this.selectBoxIndex + 1)].alpha = 0;
         if (this["box" + this.selectBoxIndex] == null) {
             this["box" + this.selectBoxIndex] = BoxFactory.createPuzzleBox(index + 1, this.selectColor, 0.3);
         }
@@ -67,18 +68,30 @@ var BoxChangeModule = (function (_super) {
         this.mContent.displayListContainer.addChild(this["box" + this.selectBoxIndex]);
         this["box" + this.selectBoxIndex].x = 380 - (this["box" + this.selectBoxIndex].style_w / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.3;
         this["box" + this.selectBoxIndex].y = 195 + 110 * this.selectBoxIndex - (this["box" + this.selectBoxIndex].style_h / 2 - 0.5) * GameConsts.GAME_TILE_WIDHT_AND_HEIGHT * 0.3;
+        /*}else{
+            if(this.selectBoxIndex==0){
+                this.mContent.m_add1.alpha=1;
+            }else if(this.selectBoxIndex==1){
+                this.mContent.m_add2.alpha=1;
+            }else if(this.selectBoxIndex==2){
+                this.mContent.m_add3.alpha=1;
+            }
+            this["box"+this.selectBoxIndex].dispose();
+            App.DisplayUtils.removeFromParent(this["box"+this.selectBoxIndex]);
+            this["box"+this.selectBoxIndex]=null;
+        }*/
     };
     BoxChangeModule.prototype.addone = function () {
         this.selectColor = this.boxAry[0].color;
         this.selectBoxIndex = 0;
         this.mContent.m_list.visible = true;
-        this.mContent.m_list.numItems = 11;
+        this.mContent.m_list.numItems = 12;
     };
     BoxChangeModule.prototype.addtwo = function () {
         this.selectBoxIndex = 1;
         this.selectColor = this.boxAry[1].color;
         this.mContent.m_list.visible = true;
-        this.mContent.m_list.numItems = 11;
+        this.mContent.m_list.numItems = 12;
     };
     BoxChangeModule.prototype.addthree = function () {
         this.selectBoxIndex = 2;
