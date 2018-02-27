@@ -80,13 +80,13 @@ var BoxChangeModule = (function (_super) {
         this.selectColor = this.boxAry[0].color;
         this.selectBoxIndex = 0;
         this.mContent.m_list.visible = true;
-        this.mContent.m_list.numItems = 12;
+        this.mContent.m_list.numItems = 11;
     };
     BoxChangeModule.prototype.addtwo = function () {
         this.selectBoxIndex = 1;
         this.selectColor = this.boxAry[1].color;
         this.mContent.m_list.visible = true;
-        this.mContent.m_list.numItems = 12;
+        this.mContent.m_list.numItems = 11;
     };
     BoxChangeModule.prototype.addthree = function () {
         this.selectBoxIndex = 2;

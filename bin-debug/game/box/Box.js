@@ -168,11 +168,18 @@ var Box = (function (_super) {
         ];
         if (state == true) {
             this.grayState = true;
-            this.filters = [new egret.ColorMatrixFilter(colorMatrixGray)];
+            // this.filters = [new egret.ColorMatrixFilter(colorMatrixGray)];
+            this.setGray1(this.grayState);
         }
         else {
             this.grayState = false;
-            this.filters = [new egret.ColorMatrixFilter(colorMatrixNormal)];
+            this.setGray1(this.grayState);
+            // this.filters = [new egret.ColorMatrixFilter(colorMatrixNormal)];
+        }
+    };
+    Box.prototype.setGray1 = function (value) {
+        for (var i = 0; i < this.boxSingleAry.length; i++) {
+            this.boxSingleAry[i].setGray(value);
         }
     };
     Box.prototype.dispose = function () {

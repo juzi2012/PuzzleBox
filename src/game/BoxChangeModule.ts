@@ -77,14 +77,14 @@ class BoxChangeModule extends PopModuleView {
         this.selectColor = this.boxAry[0].color;
         this.selectBoxIndex=0;
         this.mContent.m_list.visible=true;
-        this.mContent.m_list.numItems=12;
+        this.mContent.m_list.numItems=11;
     }
     private addtwo():void
     {
         this.selectBoxIndex=1;
         this.selectColor = this.boxAry[1].color
         this.mContent.m_list.visible=true;
-        this.mContent.m_list.numItems=12;
+        this.mContent.m_list.numItems=11;
     }
     private addthree():void
     {

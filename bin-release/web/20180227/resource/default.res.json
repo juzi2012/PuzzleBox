@@ -1,0 +1,119 @@
+{
+	"groups": [
+		{
+			"keys": "description_json,config_json,menubg,Loading,Loading@atlas0",
+			"name": "preload"
+		},
+		{
+			"keys": "game,game@atlas0,gamebg,kuang,bg,dispear,drop,gameover,button",
+			"name": "game"
+		}
+	],
+	"resources": [
+		{
+			"url": "config/description.json",
+			"type": "json",
+			"name": "description_json"
+		},
+		{
+			"url": "config/config.json",
+			"type": "json",
+			"name": "config_json"
+		},
+		{
+			"url": "assets/game@atlas0.png",
+			"type": "image",
+			"name": "game@atlas0"
+		},
+		{
+			"url": "assets/game.fui",
+			"type": "bin",
+			"name": "game"
+		},
+		{
+			"url": "assets/game@atlas0.png",
+			"type": "image",
+			"name": "game@atlas0_png"
+		},
+		{
+			"url": "config/config.json",
+			"type": "json",
+			"name": "config2_json"
+		},
+		{
+			"url": "assets/gamebg.jpg",
+			"type": "image",
+			"name": "gamebg"
+		},
+		{
+			"url": "assets/kuang.png",
+			"type": "image",
+			"name": "kuang"
+		},
+		{
+			"url": "assets/sound/AlbumArtSmall.jpg",
+			"type": "image",
+			"name": "AlbumArtSmall_jpg"
+		},
+		{
+			"url": "assets/sound/Folder.jpg",
+			"type": "image",
+			"name": "Folder_jpg"
+		},
+		{
+			"url": "assets/sound/AlbumArt_{46F4EFC4-66D0-45C4-9271-D532BE58F3E3}_Large.jpg",
+			"type": "image",
+			"name": "AlbumArt_{46F4EFC4-66D0-45C4-9271-D532BE58F3E3}_Large_jpg"
+		},
+		{
+			"url": "assets/sound/AlbumArt_{46F4EFC4-66D0-45C4-9271-D532BE58F3E3}_Small.jpg",
+			"type": "image",
+			"name": "AlbumArt_{46F4EFC4-66D0-45C4-9271-D532BE58F3E3}_Small_jpg"
+		},
+		{
+			"url": "assets/sound/bg.mp3",
+			"type": "sound",
+			"name": "bg"
+		},
+		{
+			"url": "assets/sound/dispear.mp3",
+			"type": "sound",
+			"name": "dispear"
+		},
+		{
+			"url": "assets/sound/drop.mp3",
+			"type": "sound",
+			"name": "drop"
+		},
+		{
+			"url": "assets/sound/gameover.mp3",
+			"type": "sound",
+			"name": "gameover"
+		},
+		{
+			"url": "assets/sound/button.mp3",
+			"type": "sound",
+			"name": "button"
+		},
+		{
+			"url": "assets/menubg.jpg",
+			"type": "image",
+			"name": "menubg"
+		},
+		{
+			"url": "assets/Loading.fui",
+			"type": "bin",
+			"name": "Loading"
+		},
+		{
+			"url": "assets/Loading@atlas0.png",
+			"type": "image",
+			"name": "Loading@atlas0"
+		},
+		{
+			"url": "assets/Loading@atlas0.png",
+			"type": "image",
+			"name": "Loading@atlas0_png"
+		}
+	]
+}

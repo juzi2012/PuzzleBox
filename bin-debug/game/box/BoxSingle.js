@@ -39,11 +39,21 @@ var BoxSingle = (function (_super) {
         this.pic.height = GameConsts.GAME_TILE_WIDHT_AND_HEIGHT;
         this.pic.anchorOffsetX = GameConsts.GAME_TILE_WIDHT_AND_HEIGHT / 2;
         this.pic.anchorOffsetY = GameConsts.GAME_TILE_WIDHT_AND_HEIGHT / 2;
+        this.grayPic = Utils.createFairyGuiBitmapByName("gray");
+        this.grayPic.width = GameConsts.GAME_TILE_WIDHT_AND_HEIGHT;
+        this.grayPic.height = GameConsts.GAME_TILE_WIDHT_AND_HEIGHT;
+        this.grayPic.anchorOffsetX = GameConsts.GAME_TILE_WIDHT_AND_HEIGHT / 2;
+        this.grayPic.anchorOffsetY = GameConsts.GAME_TILE_WIDHT_AND_HEIGHT / 2;
         this.addChild(this.pic);
+        this.addChild(this.grayPic);
+        this.grayPic.visible = false;
     };
     BoxSingle.prototype.setPosXY = function (posx, posy) {
         this.posx = posx;
         this.posy = posy;
+    };
+    BoxSingle.prototype.setGray = function (value) {
+        this.grayPic.visible = value;
     };
     return BoxSingle;
 }(egret.DisplayObjectContainer));
